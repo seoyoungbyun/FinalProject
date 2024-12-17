@@ -13,6 +13,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.databinding.ActivityDetailBinding
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     //art detail
@@ -20,8 +23,8 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         ActivityDetailBinding.inflate(layoutInflater)
     }
 
-    val artViewModel : ArtViewModel by viewModels {
-        ArtViewModelFactory( (application as ArtApplication).artRepository )
+    val artViewModel: ArtViewModel by viewModels {
+        ArtViewModelFactory((application as ArtApplication).artRepository)
     }
 
     var seq: String? = null
@@ -35,7 +38,12 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         seq?.let {
             artViewModel.getArtBySeq(it).asLiveData().observe(this) { art ->
                 detailBinding.title.text =
-                    art.title?.let { title -> HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY) }
+                    art.title?.let { title ->
+                        HtmlCompat.fromHtml(
+                            title,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                    }
                 detailBinding.area.text = art.area
                 detailBinding.period.text = "${art.startDate} - ${art.endDate}"
                 detailBinding.realm.text = art.relamName
@@ -47,7 +55,7 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
         }
 
-        detailBinding.btnSave.setOnClickListener{
+        detailBinding.btnSave.setOnClickListener {
             seq?.let { seq ->
                 artViewModel.updateRating(seq, detailBinding.rating.rating)
                 artViewModel.addReview(seq, detailBinding.review.text.toString())
@@ -65,6 +73,23 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 return false
             }
 
+            R.id.menu_search -> { // 검색 메뉴
+                val intent = Intent(this@DetailActivity, ReviewListActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+
+            R.id.menu_storage -> { // 보관함 메뉴
+                val intent = Intent(this@DetailActivity, ReviewListActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+
+            R.id.menu_review -> { // 리뷰 메뉴
+                val intent = Intent(this@DetailActivity, ReviewListActivity::class.java)
+                startActivity(intent)
+                return false
+            }
         }
         return false
     }

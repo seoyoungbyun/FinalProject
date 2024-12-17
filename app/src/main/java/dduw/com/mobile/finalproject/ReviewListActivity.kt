@@ -10,33 +10,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dduw.com.mobile.finalproject.data.database.Art
-import dduw.com.mobile.finalproject.databinding.ActivityMainBinding
-import dduw.com.mobile.finalproject.ui.ArtAdapter
+import dduw.com.mobile.finalproject.databinding.ActivityReviewListBinding
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import dduw.com.mobile.finalproject.ui.ReviewAdapter
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-//홈화면
+class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+//리뷰 화면
 
-    val TAG = "MAIN_ACTIVITY_TAG"
+    val TAG = "REVIEW_ACTIVITY_TAG"
 
     val binding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+        ActivityReviewListBinding.inflate(layoutInflater)
     }
 
     val artViewModel: ArtViewModel by viewModels {
         ArtViewModelFactory((application as ArtApplication).artRepository)
     }
 
-    lateinit var adapter : ArtAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        Log.d(TAG, "확인")
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
@@ -45,21 +41,20 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")
 
-        adapter = ArtAdapter()
-        binding.rvArts.adapter = adapter
-        binding.rvArts.layoutManager = LinearLayoutManager(this)
+        val adapter = ReviewAdapter()
+        binding.rvReviews.adapter = adapter
+        binding.rvReviews.layoutManager = LinearLayoutManager(this)
 
-        artViewModel.arts.observe(this) { arts ->
+        artViewModel.getReviewedArts().asLiveData().observe(this){arts->
             adapter.arts = arts
             adapter.notifyDataSetChanged()
         }
 
-        adapter.setOnItemClickListener(object : ArtAdapter.OnItemClickListener {
+        adapter.setOnItemClickListener(object : ReviewAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 val seq = adapter.arts?.get(position)?.seq
-                adapter.arts?.get(position)?.let { artViewModel.insertArt(it) }
 
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                val intent = Intent(this@ReviewListActivity, ReviewActivity::class.java)
                 intent.putExtra("seq", seq) // seq만 전달
                 startActivity(intent)
             }
@@ -70,33 +65,19 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_home -> { // 홈 메뉴
-                // 현재 날짜 구하기
-                val from = Calendar.getInstance()
-                val to = Calendar.getInstance().apply { add(Calendar.YEAR, 1) }
-
-                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-                val fromDate = dateFormat.format(from.time)
-                val toDate = dateFormat.format(to.time)
-                // ViewModel에 API 요청
-                artViewModel.getArts(null, fromDate, toDate, null, null, "1")
-
+                // MainActivity로 이동
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 return false
             }
-
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                val intent = Intent(this, DetailActivity::class.java)
                 startActivity(intent)
                 return false
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                startActivity(intent)
-                return false
-            }
-
-            R.id.menu_review -> { // 리뷰 메뉴
-                val intent = Intent(this@MainActivity, ReviewListActivity::class.java)
+                val intent = Intent(this, DetailActivity::class.java)
                 startActivity(intent)
                 return false
             }

@@ -36,6 +36,15 @@
                 android:value=".MainActivity"/>
         </activity>
 
+        <activity android:name=".ReviewActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ReviewListActivity"/>
+        </activity>
+
+        <activity android:name=".ReviewListActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
