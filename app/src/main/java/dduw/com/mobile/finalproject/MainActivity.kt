@@ -52,16 +52,16 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             adapter.notifyDataSetChanged()
         }
 
-//        adapter.setOnItemClickListener(object : ArtAdapter.OnItemClickListener {
-//            override fun onItemClick(view: View, position: Int) {
-//                val seq = adapter.arts?.get(position)?.seq
-//                adapter.arts?.get(position)?.let { artViewModel.insertArt(it) }
-//
-//                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-//                intent.putExtra("seq", seq) // seq만 전달
-//                startActivity(intent)
-//            }
-//        })
+        adapter.setOnItemClickListener(object : ArtAdapter.OnItemClickListener {
+            override fun onItemClick(view: View, position: Int) {
+                val seq = adapter.arts?.get(position)?.seq
+                adapter.arts?.get(position)?.let { artViewModel.insertArt(it) }
+
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("seq", seq) // seq만 전달
+                startActivity(intent)
+            }
+        })
 
     }
 
@@ -80,6 +80,24 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
                 return false
             }
+
+//            R.id.menu_search -> { // 검색 메뉴
+//                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+//                startActivity(intent)
+//                return false
+//            }
+//
+//            R.id.menu_storage -> { // 보관함 메뉴
+//                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+//                startActivity(intent)
+//                return false
+//            }
+//
+//            R.id.menu_review -> { // 리뷰 메뉴
+//                val intent = Intent(this@MainActivity, ReviewListActivity::class.java)
+//                startActivity(intent)
+//                return false
+//            }
         }
         return false
     }
