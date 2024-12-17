@@ -13,7 +13,7 @@ import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
 
 class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     //review detail
-    val detailBinding by lazy {
+    val reviewBinding by lazy {
         ActivityReviewBinding.inflate(layoutInflater)
     }
 
@@ -21,7 +21,7 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(detailBinding.root)
+        setContentView(reviewBinding.root)
 
         val artViewModel : ArtViewModel by viewModels {
             ArtViewModelFactory( (application as ArtApplication).artRepository )
@@ -31,8 +31,16 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
         seq?.let {
             artViewModel.getArtBySeq(it).asLiveData().observe(this) { art ->
-                detailBinding.reviewRating.rating = art.rating!!
-                detailBinding.reviewBox.setText(art.review)
+                reviewBinding.reviewRating.rating = art.rating!!
+                reviewBinding.reviewBox.setText(art.review)
+            }
+        }
+
+        reviewBinding.btnUpdate.setOnClickListener {
+            seq?.let { seq ->
+                artViewModel.updateRating(seq, reviewBinding.reviewRating.rating)
+                artViewModel.addReview(seq, reviewBinding.reviewBox.text.toString())
+                artViewModel.updateIsReviewed(seq, true)
             }
         }
 

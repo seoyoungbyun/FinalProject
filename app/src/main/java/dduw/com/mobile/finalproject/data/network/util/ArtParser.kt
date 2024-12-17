@@ -99,7 +99,7 @@ class ArtParser {
                 else -> skip(parser)
             }
         }
-        return Art(seq, title, startDate, endDate, place, realmName, area, thumbnail, gpsX, gpsY, null, null, null, null)
+        return Art(seq, title, startDate, endDate, place, realmName, area, thumbnail, gpsX, gpsY, 0.0f, null, false, false)
     }
 
 

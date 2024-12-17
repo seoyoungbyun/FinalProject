@@ -30,7 +30,7 @@ interface ArtDao {
     @Query("UPDATE art_table SET isLiked = :isLiked WHERE seq = :seq")
     suspend fun updateIsLiked(seq: String, isLiked: Boolean)
 
-    // 특정 전시의 '방문' 상태를 업데이트
+    // 특정 전시의 '리뷰' 상태를 업데이트
     @Query("UPDATE art_table SET isReviewed = :isReviewed WHERE seq = :seq")
     suspend fun updateIsReviewed(seq: String, isReviewed: Boolean)
 
