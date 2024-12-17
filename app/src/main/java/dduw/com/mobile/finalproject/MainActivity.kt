@@ -1,20 +1,37 @@
 package dduw.com.mobile.finalproject
 
+import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+    val TAG = "MAIN_ACTIVITY_TAG"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        // BottomNavigationView 초기화
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnItemSelectedListener(this) // 리스너 설정
+
+        //actionBar title 변경
+        getSupportActionBar()?.setTitle("아트로그")
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home -> { // 홈 메뉴
+//                val intent = Intent(this@MainActivity, )
+//                startActivity(intent)
+//                return false
+                Log.d(TAG, "홈 메뉴 클릭")
+            }
         }
+        return false
     }
 }
