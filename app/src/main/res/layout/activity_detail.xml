@@ -77,11 +77,13 @@
 
                     <TextView
                         android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:text="title"
                         android:textSize="16sp"
+                        android:gravity="center_vertical"
                         app:layout_constraintStart_toEndOf="@+id/textView3"
                         app:layout_constraintTop_toBottomOf="@+id/artImage" />
                 </LinearLayout>
@@ -181,28 +183,32 @@
                         android:text="장소"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                        app:layout_constraintTop_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/place"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="place"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toEndOf="@+id/textView8"
-                        app:layout_constraintTop_toBottomOf="@+id/realm" />
+                        app:layout_constraintBottom_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent" />
 
                     <Button
                         android:id="@+id/btnMap"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:text="지도"
                         android:textAlignment="center"
                         app:cornerRadius="10dp"
+                        app:layout_constraintEnd_toStartOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/place"
-                        app:layout_constraintTop_toBottomOf="@+id/realm" />
+                        app:layout_constraintTop_toBottomOf="parent" />
                 </LinearLayout>
 
                 <LinearLayout
