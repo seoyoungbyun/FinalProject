@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,8 +29,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    val artViewModel: ArtViewModel by viewModels {
-        ArtViewModelFactory((application as ArtApplication).artRepository)
+    val artViewModel: ArtViewModel by lazy {
+        ViewModelProvider(
+            (application as ArtApplication), // Application 범위를 공유
+            ArtViewModelFactory(application, (application as ArtApplication).artRepository)
+        ).get(ArtViewModel::class.java)
     }
 
     lateinit var adapter : ArtAdapter
@@ -65,24 +69,24 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         })
 
+        adapter.setOnLikeButtonClickListener(object : ArtAdapter.OnLikeButtonClickListener {
+            override fun onLikeButtonClick(view: View, position: Int) {
+                val art = adapter.arts?.get(position)
+                if (art != null) {
+                    // 좋아요 상태 변경
+                    art.isLiked = !(art.isLiked ?: false)
+
+                    val seq = art.seq
+                    artViewModel.updateIsLiked(seq, art.isLiked!!)
+                    adapter.notifyItemChanged(position)
+                }
+            }
+        })
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_home -> { // 홈 메뉴
-                // 현재 날짜 구하기
-                val from = Calendar.getInstance()
-                val to = Calendar.getInstance().apply { add(Calendar.YEAR, 1) }
-
-                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-                val fromDate = dateFormat.format(from.time)
-                val toDate = dateFormat.format(to.time)
-                // ViewModel에 API 요청
-                artViewModel.getArts(null, fromDate, toDate, null, null, "1")
-
-                return false
-            }
-
             R.id.menu_search -> { // 검색 메뉴
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 startActivity(intent)
@@ -90,7 +94,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                val intent = Intent(this@MainActivity, StorageActivity::class.java)
                 startActivity(intent)
                 return false
             }

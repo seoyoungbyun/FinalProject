@@ -1,6 +1,8 @@
 package dduw.com.mobile.finalproject.ui
 
+import android.app.Application
 import android.graphics.Bitmap
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ArtViewModel (val artRepo: ArtRepository) : ViewModel(){
+class ArtViewModel (application: Application, val artRepo: ArtRepository) : AndroidViewModel(application){
 
     //전시 목록 조회
     private val _arts = MutableLiveData<List<Art>>()

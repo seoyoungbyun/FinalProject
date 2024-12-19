@@ -1,11 +1,20 @@
 package dduw.com.mobile.finalproject
 
 import android.app.Application
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import dduw.com.mobile.finalproject.data.database.ArtDatabase
 import dduw.com.mobile.finalproject.data.database.ArtRepository
 import dduw.com.mobile.finalproject.data.network.util.ArtService
 
-class ArtApplication : Application() {
+class ArtApplication : Application(), ViewModelStoreOwner {
+    private val appViewModelStore: ViewModelStore by lazy{
+        ViewModelStore()
+    }
+
+    override val viewModelStore: ViewModelStore
+        get() = appViewModelStore
+
     val artService by lazy {
         ArtService(this)
     }

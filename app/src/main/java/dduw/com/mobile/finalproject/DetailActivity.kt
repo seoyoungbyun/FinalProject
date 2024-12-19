@@ -7,15 +7,13 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.databinding.ActivityDetailBinding
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     //art detail
@@ -23,8 +21,11 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         ActivityDetailBinding.inflate(layoutInflater)
     }
 
-    val artViewModel: ArtViewModel by viewModels {
-        ArtViewModelFactory((application as ArtApplication).artRepository)
+    val artViewModel: ArtViewModel by lazy {
+        ViewModelProvider(
+            (application as ArtApplication), // Application 범위를 공유
+            ArtViewModelFactory(application, (application as ArtApplication).artRepository)
+        ).get(ArtViewModel::class.java)
     }
 
     var seq: String? = null
@@ -52,6 +53,19 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 Glide.with(this)
                     .load(art.thumbnail)
                     .into(detailBinding.artImage)
+
+                if (art.isLiked == true){
+                    detailBinding.detailBtnLike.setImageResource(R.drawable.ic_liked)
+                }else{
+                    detailBinding.detailBtnLike.setImageResource(R.drawable.ic_border)
+                }
+
+                detailBinding.detailBtnLike.setOnClickListener{
+                    art.isLiked = !(art.isLiked ?: false)
+
+                    val seq = art.seq
+                    artViewModel.updateIsLiked(seq, art.isLiked!!)
+                }
             }
         }
 
@@ -62,7 +76,6 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 artViewModel.updateIsReviewed(seq, true)
             }
         }
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -80,7 +93,7 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
-                val intent = Intent(this@DetailActivity, ReviewListActivity::class.java)
+                val intent = Intent(this@DetailActivity, StorageActivity::class.java)
                 startActivity(intent)
                 return false
             }

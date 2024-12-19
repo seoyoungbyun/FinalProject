@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.databinding.ActivityReviewBinding
@@ -23,8 +24,11 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         setContentView(reviewBinding.root)
 
-        val artViewModel : ArtViewModel by viewModels {
-            ArtViewModelFactory( (application as ArtApplication).artRepository )
+        val artViewModel: ArtViewModel by lazy {
+            ViewModelProvider(
+                (application as ArtApplication), // Application 범위를 공유
+                ArtViewModelFactory(application, (application as ArtApplication).artRepository)
+            ).get(ArtViewModel::class.java)
         }
 
         seq = intent.getStringExtra("seq")
@@ -61,7 +65,7 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
-                val intent = Intent(this@ReviewActivity, ReviewListActivity::class.java)
+                val intent = Intent(this@ReviewActivity, StorageActivity::class.java)
                 startActivity(intent)
                 return false
             }

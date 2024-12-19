@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dduw.com.mobile.finalproject.R
 import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.databinding.ListItemBinding
 
@@ -25,13 +26,22 @@ class ArtAdapter : RecyclerView.Adapter<ArtAdapter.ArtHolder>() {
         holder.itemBinding.artTitle.text =
             arts?.get(position)?.title?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString() }
         holder.itemBinding.artDate.text = "${arts?.get(position)?.startDate} - ${arts?.get(position)?.endDate}"
+        if (arts?.get(position)?.isLiked == true){
+            holder.itemBinding.btnLike.setImageResource(R.drawable.ic_liked)
+        }else{
+            holder.itemBinding.btnLike.setImageResource(R.drawable.ic_border)
+        }
 //        // 이미지 URL을 Glide로 로드
         Glide.with(holder.itemBinding.root.context)
             .load(arts?.get(position)?.thumbnail) // 이미지 URL
             .into(holder.itemBinding.artPhoto) // ImageView에 로드
 
         holder.itemBinding.clItem.setOnClickListener{
-            clickListener?.onItemClick(it, position)
+            itemClickListener?.onItemClick(it, position)
+        }
+
+        holder.itemBinding.btnLike.setOnClickListener{
+            likeButtonClickListener?.onLikeButtonClick(it, position)
         }
     }
 
@@ -41,9 +51,18 @@ class ArtAdapter : RecyclerView.Adapter<ArtAdapter.ArtHolder>() {
         fun onItemClick(view: View, position: Int)
     }
 
-    var clickListener: OnItemClickListener? = null
+    interface OnLikeButtonClickListener {
+        fun onLikeButtonClick(view: View, position: Int)
+    }
+
+    var itemClickListener: OnItemClickListener? = null
+    var likeButtonClickListener: OnLikeButtonClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.clickListener = listener
+        this.itemClickListener = listener
+    }
+
+    fun setOnLikeButtonClickListener(listener: OnLikeButtonClickListener) {
+        this.likeButtonClickListener = listener
     }
 }
