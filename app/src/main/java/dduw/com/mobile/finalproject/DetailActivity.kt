@@ -66,6 +66,15 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                     val seq = art.seq
                     artViewModel.updateIsLiked(seq, art.isLiked!!)
                 }
+
+                detailBinding.btnMap.setOnClickListener{
+                    val intent = Intent(this@DetailActivity, DetailMapActivity::class.java)
+                    intent.putExtra("gpsX", art.gpsX)
+                    intent.putExtra("gpsY", art.gpsY)
+                    intent.putExtra("place", art.place)
+                    intent.putExtra("title", art.title)
+                    startActivity(intent)
+                }
             }
         }
 
