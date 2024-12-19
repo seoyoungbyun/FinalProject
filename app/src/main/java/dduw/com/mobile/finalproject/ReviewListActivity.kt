@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -61,6 +60,20 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
                 val intent = Intent(this@ReviewListActivity, ReviewActivity::class.java)
                 intent.putExtra("seq", seq) // seq만 전달
                 startActivity(intent)
+            }
+        })
+
+        adapter.setOnLikeButtonClickListener(object : ReviewAdapter.OnLikeButtonClickListener {
+            override fun onLikeButtonClick(view: View, position: Int) {
+                val art = adapter.arts?.get(position)
+                if (art != null) {
+                    // 좋아요 상태 변경
+                    art.isLiked = !(art.isLiked ?: false)
+
+                    val seq = art.seq
+                    artViewModel.updateIsLiked(seq, art.isLiked!!)
+                    adapter.notifyItemChanged(position)
+                }
             }
         })
 

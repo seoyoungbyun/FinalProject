@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dduw.com.mobile.finalproject.R
 import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.databinding.ListReviewItemBinding
 
@@ -26,6 +27,11 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
             arts?.get(position)?.title?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString() }
         holder.itemBinding.reviewRating.text = arts?.get(position)?.rating.toString()
         holder.itemBinding.reviewDate.text = "${arts?.get(position)?.startDate} - ${arts?.get(position)?.endDate}"
+        if (arts?.get(position)?.isLiked == true){
+            holder.itemBinding.btnLikeReview.setImageResource(R.drawable.ic_liked)
+        }else{
+            holder.itemBinding.btnLikeReview.setImageResource(R.drawable.ic_border)
+        }
 //        // 이미지 URL을 Glide로 로드
         Glide.with(holder.itemBinding.root.context)
             .load(arts?.get(position)?.thumbnail) // 이미지 URL
@@ -33,6 +39,10 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
 
         holder.itemBinding.rvItem.setOnClickListener{
             clickListener?.onItemClick(it, position)
+        }
+
+        holder.itemBinding.btnLikeReview.setOnClickListener{
+            likeButtonClickListener?.onLikeButtonClick(it, position)
         }
     }
 
@@ -42,9 +52,18 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
         fun onItemClick(view: View, position: Int)
     }
 
+    interface OnLikeButtonClickListener {
+        fun onLikeButtonClick(view: View, position: Int)
+    }
+
     var clickListener: OnItemClickListener? = null
+    var likeButtonClickListener: OnLikeButtonClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.clickListener = listener
+    }
+
+    fun setOnLikeButtonClickListener(listener: OnLikeButtonClickListener) {
+        this.likeButtonClickListener = listener
     }
 }
