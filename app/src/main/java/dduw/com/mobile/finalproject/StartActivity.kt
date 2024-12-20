@@ -29,6 +29,9 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        //actionBar title 변경
+        getSupportActionBar()?.setTitle("아트로그")
+
         binding.startBtn.setOnClickListener{
             // ViewModel에 API 요청
             artViewModel.getArts(null, null, null, null, null, "1")

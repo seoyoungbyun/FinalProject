@@ -35,11 +35,9 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        Log.d(TAG, "확인")
-
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigationView.setOnItemSelectedListener(this) // 리스너 설정
+        bottomNavigationView.setOnItemSelectedListener(this@ReviewListActivity) // 리스너 설정
 
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")

@@ -43,6 +43,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     )
 
     lateinit var adapter : ArtBasicAdapter
+    var isChangedInRecycler = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigationView.setOnItemSelectedListener(this) // 리스너 설정
+        bottomNavigationView.setOnItemSelectedListener(this@SearchActivity) // 리스너 설정
 
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")
@@ -58,6 +59,12 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         adapter = ArtBasicAdapter()
         binding.rvSearch.adapter = adapter
         binding.rvSearch.layoutManager = LinearLayoutManager(this)
+
+        binding.btnToMap.setOnClickListener{
+            val intent = Intent(this@SearchActivity, SearchMapActivity::class.java)
+            intent.putExtra("isChanged", isChangedInRecycler)
+            startActivity(intent)
+        }
 
         binding.btnSearch.setOnClickListener{
             val defaultRealmValue = "분류 전체"
@@ -74,6 +81,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
             val keyword = binding.editSearchTitle.text.toString().takeIf { it.isNotBlank() }
 
+            isChangedInRecycler = !(realm == null && area == null && from == null && to == null && keyword == null)
             artViewModel.getArts(realmCode, from, to, area, keyword, "1")
 
             artViewModel.arts.observe(this) { arts ->
@@ -92,6 +100,14 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 startActivity(intent)
             }
         })
+
+        val isChangedInMap = intent.getBooleanExtra("isChanged", false)
+        if (isChangedInMap){
+            artViewModel.arts.observe(this) { arts ->
+                adapter.arts = arts
+                adapter.notifyDataSetChanged()
+            }
+        }
 
     }
 

@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigationView.setOnItemSelectedListener(this) // 리스너 설정
+        bottomNavigationView.setOnItemSelectedListener(this@MainActivity) // 리스너 설정
 
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")

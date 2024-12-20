@@ -134,32 +134,6 @@ class DetailMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         }
     }
 
-    // Permission 확인
-    val locationPermissionRequest = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions() ) { permissions ->
-        when {
-            permissions.getOrDefault(ACCESS_FINE_LOCATION, false) ->
-                Log.d(TAG, "정확한 위치 사용")
-            permissions.getOrDefault(ACCESS_COARSE_LOCATION, false) ->
-                Log.d(TAG, "근사 위치 사용")
-            else ->
-                Log.d(TAG, "권한 미승인")
-        }
-    }
-
-
-    private fun checkPermissions() {
-        if ( checkSelfPermission(ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && checkSelfPermission(ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
-            Log.d(TAG, "필요 권한 있음")
-//            startLocationRequest()
-        } else {
-            locationPermissionRequest.launch(
-                arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
-            )
-        }
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_search -> { // 검색 메뉴

@@ -9,7 +9,7 @@
 
     <!-- Spinner 레이아웃 -->
     <LinearLayout
-        android:id="@+id/spinner_layout"
+        android:id="@+id/spinnerMap_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,7 +21,7 @@
 
         <!-- 분류 선택 -->
         <Spinner
-            android:id="@+id/spinnerRealm"
+            android:id="@+id/spinnerMapRealm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -30,7 +30,7 @@
 
         <!-- 지역 선택 -->
         <Spinner
-            android:id="@+id/spinnerArea"
+            android:id="@+id/spinnerMapArea"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,18 +41,18 @@
 
     <!-- EditText 레이아웃 -->
     <LinearLayout
-        android:id="@+id/editText_layout"
+        android:id="@+id/editTextMap_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="8dp"
-        app:layout_constraintTop_toBottomOf="@id/spinner_layout"
+        app:layout_constraintTop_toBottomOf="@id/spinnerMap_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <!-- 날짜 검색 -->
         <EditText
-            android:id="@+id/editSearchDate"
+            android:id="@+id/editMapSearchDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,7 +63,7 @@
 
         <!-- 제목 검색 -->
         <EditText
-            android:id="@+id/editSearchTitle"
+            android:id="@+id/editMapSearchTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,7 +74,7 @@
 
         <!-- 검색 버튼 -->
         <ImageButton
-            android:id="@+id/btnSearch"
+            android:id="@+id/btnMapSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_search"
@@ -84,27 +84,29 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnToMap"
+        android:id="@+id/btnToRecycler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        android:text="지도"
+        android:text="목록"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editText_layout" />
+        app:layout_constraintTop_toBottomOf="@id/editTextMap_layout" />
 
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearch"
-        android:layout_width="match_parent"
+    <fragment
+        android:id="@+id/searchMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/btnToMap"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnToRecycler" />
 
-
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
