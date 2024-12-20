@@ -17,13 +17,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.databinding.ActivityDetailMapBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class DetailMapActivity : AppCompatActivity() {
+class DetailMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     val TAG = "DETAIL_MAP_ACTIVITY"
 
     private lateinit var googleMap: GoogleMap
@@ -37,6 +38,9 @@ class DetailMapActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        //actionBar title 변경
+        getSupportActionBar()?.setTitle("아트로그")
 
         //지도 객체 가져오기
         val mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -154,5 +158,28 @@ class DetailMapActivity : AppCompatActivity() {
                 arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
             )
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_search -> { // 검색 메뉴
+                val intent = Intent(this@DetailMapActivity, SearchActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+
+            R.id.menu_storage -> { // 보관함 메뉴
+                val intent = Intent(this@DetailMapActivity, StorageActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+
+            R.id.menu_review -> { // 리뷰 메뉴
+                val intent = Intent(this@DetailMapActivity, ReviewListActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+        }
+        return false
     }
 }

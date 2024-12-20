@@ -39,9 +39,6 @@
         <activity
             android:name=".DetailActivity"
             android:exported="false">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
         </activity>
 
         <activity
@@ -63,6 +60,9 @@
             android:exported="false"/>
 
         <activity android:name=".StorageActivity"
+            android:exported="false"/>
+
+        <activity android:name=".SearchActivity"
             android:exported="false"/>
     </application>
 

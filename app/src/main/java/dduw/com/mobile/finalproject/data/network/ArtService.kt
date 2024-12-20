@@ -18,6 +18,7 @@ class ArtService(val context: Context) {
         val address : String = context.resources.getString(R.string.url)
 
         val params = HashMap<String, String>()
+        params["rows"] = 20.toString()
         realmCode?.let { params["realmCode"] = it }
         from?.let { params["from"] = it }
         to?.let { params["to"] = it }

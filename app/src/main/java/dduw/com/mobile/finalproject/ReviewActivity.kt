@@ -24,6 +24,9 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         setContentView(reviewBinding.root)
 
+        //actionBar title 변경
+        getSupportActionBar()?.setTitle("아트로그")
+
         val artViewModel: ArtViewModel by lazy {
             ViewModelProvider(
                 (application as ArtApplication), // Application 범위를 공유
@@ -59,19 +62,13 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this@ReviewActivity, ReviewListActivity::class.java)
+                val intent = Intent(this@ReviewActivity, SearchActivity::class.java)
                 startActivity(intent)
                 return false
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
                 val intent = Intent(this@ReviewActivity, StorageActivity::class.java)
-                startActivity(intent)
-                return false
-            }
-
-            R.id.menu_review -> { // 리뷰 메뉴
-                val intent = Intent(this@ReviewActivity, ReviewListActivity::class.java)
                 startActivity(intent)
                 return false
             }

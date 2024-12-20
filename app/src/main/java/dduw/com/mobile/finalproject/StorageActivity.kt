@@ -90,13 +90,7 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
             }
 
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this@StorageActivity, DetailActivity::class.java)
-                startActivity(intent)
-                return false
-            }
-
-            R.id.menu_storage -> { // 보관함 메뉴
-                val intent = Intent(this@StorageActivity, StorageActivity::class.java)
+                val intent = Intent(this@StorageActivity, SearchActivity::class.java)
                 startActivity(intent)
                 return false
             }

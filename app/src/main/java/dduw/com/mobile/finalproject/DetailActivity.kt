@@ -34,6 +34,12 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         setContentView(detailBinding.root)
 
+        //actionBar title 변경
+        getSupportActionBar()?.setTitle("아트로그")
+
+        // 액션 바에 뒤로가기 버튼 표시
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         seq = intent.getStringExtra("seq")
 
         seq?.let {
@@ -85,18 +91,23 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 artViewModel.updateIsReviewed(seq, true)
             }
         }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> { // 액션 바의 뒤로가기 버튼 클릭
+                onBackPressed() // 기본 뒤로가기 동작
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_home -> { // 홈 메뉴
-                val intent = Intent(this@DetailActivity, MainActivity::class.java)
-                startActivity(intent)
-                return false
-            }
-
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this@DetailActivity, ReviewListActivity::class.java)
+                val intent = Intent(this@DetailActivity, SearchActivity::class.java)
                 startActivity(intent)
                 return false
             }

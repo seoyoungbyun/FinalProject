@@ -88,7 +88,7 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
                 return false
             }
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this, DetailActivity::class.java)
+                val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
                 return false
             }
