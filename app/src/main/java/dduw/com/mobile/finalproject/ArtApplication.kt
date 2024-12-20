@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import dduw.com.mobile.finalproject.data.database.ArtDatabase
-import dduw.com.mobile.finalproject.data.database.ArtRepository
+import dduw.com.mobile.finalproject.data.ArtRepository
 import dduw.com.mobile.finalproject.data.network.util.ArtService
 
 class ArtApplication : Application(), ViewModelStoreOwner {

@@ -1,6 +1,8 @@
-package dduw.com.mobile.finalproject.data.database
+package dduw.com.mobile.finalproject.data
 
 import android.graphics.Bitmap
+import dduw.com.mobile.finalproject.data.database.Art
+import dduw.com.mobile.finalproject.data.database.ArtDao
 import dduw.com.mobile.finalproject.data.network.util.ArtService
 import kotlinx.coroutines.flow.Flow
 

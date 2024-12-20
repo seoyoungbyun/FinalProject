@@ -3,7 +3,7 @@ package dduw.com.mobile.finalproject.ui
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import dduw.com.mobile.finalproject.data.database.ArtRepository
+import dduw.com.mobile.finalproject.data.ArtRepository
 
 class ArtViewModelFactory(private val application: Application, private val repo: ArtRepository) :
     ViewModelProvider.AndroidViewModelFactory(application) {

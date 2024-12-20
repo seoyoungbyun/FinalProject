@@ -5,10 +5,9 @@ import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dduw.com.mobile.finalproject.data.database.Art
-import dduw.com.mobile.finalproject.data.database.ArtRepository
+import dduw.com.mobile.finalproject.data.ArtRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

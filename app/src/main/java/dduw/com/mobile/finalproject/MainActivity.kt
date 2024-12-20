@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.databinding.ActivityMainBinding
 import dduw.com.mobile.finalproject.ui.ArtAdapter
+import dduw.com.mobile.finalproject.ui.ArtBasicAdapter
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
 import java.text.SimpleDateFormat
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         ).get(ArtViewModel::class.java)
     }
 
-    lateinit var adapter : ArtAdapter
+    lateinit var adapter : ArtBasicAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")
 
-        adapter = ArtAdapter()
+        adapter = ArtBasicAdapter()
         binding.rvArts.adapter = adapter
         binding.rvArts.layoutManager = LinearLayoutManager(this)
 
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             adapter.notifyDataSetChanged()
         }
 
-        adapter.setOnItemClickListener(object : ArtAdapter.OnItemClickListener {
+        adapter.setOnItemClickListener(object : ArtBasicAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 val seq = adapter.arts?.get(position)?.seq
                 adapter.arts?.get(position)?.let { artViewModel.insertArt(it) }
@@ -66,20 +67,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 intent.putExtra("seq", seq) // seq만 전달
                 startActivity(intent)
-            }
-        })
-
-        adapter.setOnLikeButtonClickListener(object : ArtAdapter.OnLikeButtonClickListener {
-            override fun onLikeButtonClick(view: View, position: Int) {
-                val art = adapter.arts?.get(position)
-                if (art != null) {
-                    // 좋아요 상태 변경
-                    art.isLiked = !(art.isLiked ?: false)
-
-                    val seq = art.seq
-                    artViewModel.updateIsLiked(seq, art.isLiked!!)
-                    adapter.notifyItemChanged(position)
-                }
             }
         })
 
