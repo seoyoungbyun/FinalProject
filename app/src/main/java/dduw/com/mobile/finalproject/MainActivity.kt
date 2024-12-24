@@ -91,25 +91,25 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.menu_search -> { // 검색 메뉴
                 val intent = Intent(this@MainActivity, SearchActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
                 val intent = Intent(this@MainActivity, StorageActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_review -> { // 리뷰 메뉴
                 val intent = Intent(this@MainActivity, ReviewListActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_map->{
                 val intent = Intent(this@MainActivity, PlaceMapActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
         }
         return false

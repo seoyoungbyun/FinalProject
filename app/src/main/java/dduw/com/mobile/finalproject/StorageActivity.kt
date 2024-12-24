@@ -38,6 +38,7 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.menu_storage
         bottomNavigationView.setOnItemSelectedListener(this@StorageActivity) // 리스너 설정
 
         //actionBar title 변경
@@ -92,19 +93,19 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
             R.id.menu_search -> { // 검색 메뉴
                 val intent = Intent(this@StorageActivity, SearchActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_review -> { // 리뷰 메뉴
                 val intent = Intent(this@StorageActivity, ReviewListActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_map -> {
                 val intent = Intent(this@StorageActivity, SearchMapActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
         }
         return false

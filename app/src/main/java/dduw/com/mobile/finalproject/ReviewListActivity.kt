@@ -37,6 +37,7 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.menu_review
         bottomNavigationView.setOnItemSelectedListener(this@ReviewListActivity) // 리스너 설정
 
         //actionBar title 변경
@@ -83,24 +84,24 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
                 // MainActivity로 이동
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
             R.id.menu_search -> { // 검색 메뉴
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
                 val intent = Intent(this, StorageActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_map->{
                 val intent = Intent(this@ReviewListActivity, PlaceMapActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
         }
         return false

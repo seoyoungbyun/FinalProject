@@ -68,6 +68,7 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.menu_map
         bottomNavigationView.setOnItemSelectedListener(this@PlaceMapActivity) // 리스너 설정
 
         //actionBar title 변경
@@ -172,19 +173,19 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
             R.id.menu_search -> { // 검색 메뉴
                 val intent = Intent(this@PlaceMapActivity, SearchActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_storage -> { // 검색 메뉴
                 val intent = Intent(this@PlaceMapActivity, StorageActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_review -> { // 리뷰 메뉴
                 val intent = Intent(this@PlaceMapActivity, ReviewListActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
         }
         return false

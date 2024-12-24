@@ -57,6 +57,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
 
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.menu_search
         bottomNavigationView.setOnItemSelectedListener(this@SearchMapActivity) // 리스너 설정
 
         //actionBar title 변경
@@ -143,25 +144,25 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
                 artViewModel.getArts(null, null, null, null, null, "1")
                 val intent = Intent(this@SearchMapActivity, MainActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
                 val intent = Intent(this@SearchMapActivity, StorageActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_review -> { // 리뷰 메뉴
                 val intent = Intent(this@SearchMapActivity, ReviewListActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
 
             R.id.menu_map -> {
                 val intent = Intent(this@SearchMapActivity, SearchMapActivity::class.java)
                 startActivity(intent)
-                return false
+                return true
             }
         }
         return false
