@@ -3,6 +3,7 @@ package dduw.com.mobile.finalproject
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -50,10 +51,18 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         }
 
         reviewBinding.btnUpdate.setOnClickListener {
-            seq?.let { seq ->
-                artViewModel.updateRating(seq, reviewBinding.reviewRating.rating)
-                artViewModel.addReview(seq, reviewBinding.reviewBox.text.toString())
-                artViewModel.updateIsReviewed(seq, true)
+            try {
+                seq?.let { seq ->
+                    artViewModel.updateRating(seq, reviewBinding.reviewRating.rating)
+                    artViewModel.addReview(seq, reviewBinding.reviewBox.text.toString())
+                    artViewModel.updateIsReviewed(seq, true)
+                }
+
+                // 성공 메시지 표시
+                Toast.makeText(this, "리뷰가 수정되었습니다", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                // 실패 메시지 표시
+                Toast.makeText(this, "리뷰 수정에 실패했습니다", Toast.LENGTH_SHORT).show()
             }
         }
 

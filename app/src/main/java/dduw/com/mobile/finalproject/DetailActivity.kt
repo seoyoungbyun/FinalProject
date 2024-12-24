@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -92,10 +93,18 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         }
 
         detailBinding.btnSave.setOnClickListener {
-            seq?.let { seq ->
-                artViewModel.updateRating(seq, detailBinding.rating.rating)
-                artViewModel.addReview(seq, detailBinding.review.text.toString())
-                artViewModel.updateIsReviewed(seq, true)
+            try {
+                seq?.let { seq ->
+                    artViewModel.updateRating(seq, detailBinding.rating.rating)
+                    artViewModel.addReview(seq, detailBinding.review.text.toString())
+                    artViewModel.updateIsReviewed(seq, true)
+                }
+
+                // 성공 메시지 표시
+                Toast.makeText(this, "리뷰가 저장되었습니다", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                // 실패 메시지 표시
+                Toast.makeText(this, "리뷰 저장에 실패했습니다", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -132,7 +141,7 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@DetailActivity, SearchMapActivity::class.java)
+                val intent = Intent(this@DetailActivity, PlaceMapActivity::class.java)
                 startActivity(intent)
                 return true
             }
