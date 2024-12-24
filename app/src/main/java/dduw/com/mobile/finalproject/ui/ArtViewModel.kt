@@ -47,6 +47,14 @@ class ArtViewModel (application: Application, val artRepo: ArtRepository) : Andr
         _drawable.value = bitmap
     }
 
+    //주변 장소 표시
+    private val _places = MutableLiveData<List<Poi>>()
+    val places : LiveData<List<Poi>> = _places
+
+    fun getPlaces(lon: Float, lat: Float, categories: String) = viewModelScope.launch {
+        _places.value = artRepo.getPlaces(lon, lat, categories)
+    }
+
     fun insertArt(art: ArtDetail) = viewModelScope.launch {
         artRepo.insertArt(art)
     }

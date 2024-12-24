@@ -76,6 +76,12 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 startActivity(intent)
                 return false
             }
+
+            R.id.menu_map->{
+                val intent = Intent(this@ReviewActivity, PlaceMapActivity::class.java)
+                startActivity(intent)
+                return false
+            }
         }
         return false
     }

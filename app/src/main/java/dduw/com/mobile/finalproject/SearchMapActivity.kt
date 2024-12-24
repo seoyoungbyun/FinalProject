@@ -89,7 +89,8 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             artViewModel.getArts(realmCode, from, to, area, keyword, "1")
 
             artViewModel.arts.observe(this) { arts ->
-                showMarkers(arts)
+                val validArts = arts.filter { it.gpsY?.toDoubleOrNull() != null && it.gpsX?.toDoubleOrNull() != null }
+                showMarkers(validArts)
             }
         }
 
@@ -102,7 +103,8 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
 
                 if (isChangedInRecycler){
                     artViewModel.arts.observe(this@SearchMapActivity) { arts ->
-                        showMarkers(arts)
+                        val validArts = arts.filter { it.gpsY?.toDoubleOrNull() != null && it.gpsX?.toDoubleOrNull() != null }
+                        showMarkers(validArts)
                     }
                 }
             }
@@ -152,6 +154,12 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
 
             R.id.menu_review -> { // 리뷰 메뉴
                 val intent = Intent(this@SearchMapActivity, ReviewListActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+
+            R.id.menu_map -> {
+                val intent = Intent(this@SearchMapActivity, SearchMapActivity::class.java)
                 startActivity(intent)
                 return false
             }

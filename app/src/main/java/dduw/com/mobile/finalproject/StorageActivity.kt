@@ -100,6 +100,12 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
                 startActivity(intent)
                 return false
             }
+
+            R.id.menu_map -> {
+                val intent = Intent(this@StorageActivity, SearchMapActivity::class.java)
+                startActivity(intent)
+                return false
+            }
         }
         return false
     }
