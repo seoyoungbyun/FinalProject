@@ -79,4 +79,9 @@ dependencies {
     //GoogleMap
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
+
+    // retrofit
+    val retrofit_version = "2.11.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
 }

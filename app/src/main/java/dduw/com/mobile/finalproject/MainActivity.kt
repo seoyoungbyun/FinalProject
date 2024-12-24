@@ -105,6 +105,12 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 startActivity(intent)
                 return false
             }
+
+            R.id.menu_map->{
+                val intent = Intent(this@MainActivity, PlaceMapActivity::class.java)
+                startActivity(intent)
+                return false
+            }
         }
         return false
     }

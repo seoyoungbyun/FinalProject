@@ -7,9 +7,11 @@ import dduw.com.mobile.finalproject.data.database.ArtDetail
 import dduw.com.mobile.finalproject.data.network.NVService
 import dduw.com.mobile.finalproject.data.network.Poi
 import dduw.com.mobile.finalproject.data.network.util.ArtService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
-class ArtRepository (private val artService: ArtService, private val artDao: ArtDao){
+class ArtRepository (private val artService: ArtService, private val nvService: NVService, private val artDao: ArtDao){
 
     suspend fun getArtsByKeyword(relamCode: String?, from: String?, to: String?, sido: String?, keyword: String?, sortStdr: String) : List<Art> {
         return artService.getArtsByKeyword(relamCode, from, to, sido, keyword, sortStdr)
@@ -17,6 +19,13 @@ class ArtRepository (private val artService: ArtService, private val artDao: Art
 
     suspend fun getArtDetail(seq: String?) : ArtDetail? {
         return artService.getArtDetailBySeq(seq)
+    }
+
+    suspend fun getPlaces(lon: Float, lat: Float, categories: String): List<Poi>? {
+        return withContext(Dispatchers.IO) {
+            val response = nvService.getPlaces(lon, lat, categories)
+            response?.searchPoiInfo?.pois?.poi ?: emptyList()
+        }
     }
 
     suspend fun getImage(url: String?) : Bitmap {

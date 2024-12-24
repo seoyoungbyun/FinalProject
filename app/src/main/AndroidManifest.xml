@@ -67,6 +67,9 @@
 
         <activity android:name=".SearchMapActivity"
             android:exported="false"/>
+
+        <activity android:name=".PlaceMapActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

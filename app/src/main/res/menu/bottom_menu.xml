@@ -25,4 +25,10 @@
         android:title="리뷰"
         android:icon="@drawable/ic_review"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_map"
+        android:enabled="true"
+        android:title="주변 공연장"
+        android:icon="@drawable/ic_map"
+        app:showAsAction="always" />
 </menu>
