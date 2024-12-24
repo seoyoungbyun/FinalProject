@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Art::class], version = 1)
+@Database(entities = [ArtDetail::class], version = 1)
 abstract class ArtDatabase : RoomDatabase() {
     abstract fun artDao(): ArtDao
 
@@ -16,8 +16,12 @@ abstract class ArtDatabase : RoomDatabase() {
         fun getDatabase(context: Context): ArtDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, ArtDatabase::class.java, "art_db"
-                ).build()
+                    context.applicationContext,
+                    ArtDatabase::class.java,
+                    "art_db2"
+                )
+                    .fallbackToDestructiveMigration() // 스키마 변경 시 데이터 삭제
+                    .build()
                 INSTANCE = instance
                 instance
             }

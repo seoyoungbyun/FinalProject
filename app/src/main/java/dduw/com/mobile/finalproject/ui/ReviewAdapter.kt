@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dduw.com.mobile.finalproject.R
 import dduw.com.mobile.finalproject.data.database.Art
+import dduw.com.mobile.finalproject.data.database.ArtDetail
 import dduw.com.mobile.finalproject.databinding.ListReviewItemBinding
 
 class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
-    var arts: List<Art>? = null
+    var arts: List<ArtDetail>? = null
 
     override fun getItemCount(): Int {
         return arts?.size ?: 0
@@ -34,7 +35,7 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
         }
 //        // 이미지 URL을 Glide로 로드
         Glide.with(holder.itemBinding.root.context)
-            .load(arts?.get(position)?.thumbnail) // 이미지 URL
+            .load(arts?.get(position)?.imgUrl) // 이미지 URL
             .into(holder.itemBinding.reviewPhoto) // ImageView에 로드
 
         holder.itemBinding.rvItem.setOnClickListener{

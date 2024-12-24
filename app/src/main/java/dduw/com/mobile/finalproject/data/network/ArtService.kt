@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.FutureTarget
 import dduw.com.mobile.finalproject.R
 import dduw.com.mobile.finalproject.data.database.Art
+import dduw.com.mobile.finalproject.data.database.ArtDetail
 import java.io.InputStream
 
 class ArtService(val context: Context) {
@@ -36,6 +37,25 @@ class ArtService(val context: Context) {
         }
 
         return ArtParser().parse(result)
+    }
+
+    suspend fun getArtDetailBySeq(seq: String?) : ArtDetail? {
+
+        val address : String = context.resources.getString(R.string.url_detail)
+
+        val params = HashMap<String, String>()
+        seq?.let { params["seq"] = it }
+        params["serviceKey"] = context.resources.getString(R.string.serviceKey)
+
+        val result: InputStream? = try {
+            Log.d(TAG, params.toString())
+            NetworkUtil(context).sendRequest(NetworkUtil.GET, address, params)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+
+        return ArtDetailParser().parse(result)
     }
 
     // Glide 를 사용하여 책 이미지를 가져와 Bitmap 으로 반환

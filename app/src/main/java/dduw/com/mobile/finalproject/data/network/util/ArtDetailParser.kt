@@ -2,31 +2,34 @@ package dduw.com.mobile.finalproject.data.network.util
 
 import android.util.Xml
 import dduw.com.mobile.finalproject.data.database.Art
-import dduw.com.mobile.finalproject.data.network.util.ArtDetailParser.Companion
+import dduw.com.mobile.finalproject.data.database.ArtDetail
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.io.InputStream
 
-class ArtParser {
+class ArtDetailParser {
     private val ns: String? = null
 
     companion object {
         val FAULT_RESULT = "faultResult"
         val UPPER_TAG = "msgBody"
-        val PERFOR_LIST_TAG = "perforList"
+        val PERFOR_INFO_TAG = "perforInfo"
         val SEQ_TAG = "seq"
         val TITLE_TAG = "title"
         val STARTDATE_TAG = "startDate"
         val ENDDATE_TAG = "endDate"
         val PLACE_TAG = "place"
-        val THUMBNAIL_TAG = "thumbnail"
+        val REALMNAME_TAG = "realmName"
+        val AREA_TAG = "area"
+        val PRICE_TAG = "price"
+        val IMGURL_TAG = "imgUrl"
         val GPSX_TAG = "gpsX"
         val GPSY_TAG = "gpsY"
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream?) : List<Art> {
+    fun parse(inputStream: InputStream?) : ArtDetail? {
 
         inputStream.use { inputStream ->
             val parser : XmlPullParser = Xml.newPullParser()
@@ -47,34 +50,35 @@ class ArtParser {
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readArt(parser: XmlPullParser) : List<Art> {
-        val arts = mutableListOf<Art>()
+    private fun readArt(parser: XmlPullParser) : ArtDetail? {
 
         parser.require(XmlPullParser.START_TAG, ns, "msgBody")
         while(parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
             }
-            if (parser.name == PERFOR_LIST_TAG) {
-                arts.add( readArtInfo(parser) )
+            if (parser.name == PERFOR_INFO_TAG) {
+                return readArtInfo(parser)
             } else {
                 skip(parser)
             }
         }
-
-        return arts
+        return null
     }
 
 
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readArtInfo(parser: XmlPullParser) : Art {
-        parser.require(XmlPullParser.START_TAG, ns, PERFOR_LIST_TAG)
+    private fun readArtInfo(parser: XmlPullParser) : ArtDetail {
+        parser.require(XmlPullParser.START_TAG, ns, PERFOR_INFO_TAG)
         var seq : String = "null"
         var title : String? = null
-        var thumbnail: String? = null
+        var imgUrl: String? = null
         var startDate: String? = null
         var endDate: String? = null
         var place: String? = null
+        var realmName: String? = null
+        var area: String? = null
+        var price: String? = null
         var gpsX: String? = null
         var gpsY: String? = null
 
@@ -85,16 +89,19 @@ class ArtParser {
             when (parser.name) {
                 SEQ_TAG -> seq = readTextInTag(parser, SEQ_TAG)
                 TITLE_TAG -> title = readTextInTag(parser, TITLE_TAG)
-                THUMBNAIL_TAG -> thumbnail = readTextInTag(parser, THUMBNAIL_TAG)
+                IMGURL_TAG -> imgUrl = readTextInTag(parser, IMGURL_TAG)
                 STARTDATE_TAG -> startDate = readTextInTag(parser, STARTDATE_TAG)
                 ENDDATE_TAG -> endDate = readTextInTag(parser, ENDDATE_TAG)
                 PLACE_TAG -> place = readTextInTag(parser, PLACE_TAG)
-                GPSX_TAG -> gpsX = readTextInTag(parser, ArtDetailParser.GPSX_TAG)
-                GPSY_TAG -> gpsY = readTextInTag(parser, ArtDetailParser.GPSY_TAG)
+                REALMNAME_TAG -> realmName = readTextInTag(parser, REALMNAME_TAG)
+                AREA_TAG -> area = readTextInTag(parser, AREA_TAG)
+                PRICE_TAG -> price = readTextInTag(parser, PRICE_TAG)
+                GPSX_TAG -> gpsX = readTextInTag(parser, GPSX_TAG)
+                GPSY_TAG -> gpsY = readTextInTag(parser, GPSY_TAG)
                 else -> skip(parser)
             }
         }
-        return Art(seq, title, startDate, endDate, place, thumbnail, gpsX, gpsY)
+        return ArtDetail(seq, title, startDate, endDate, place, realmName, area, price, imgUrl, gpsX, gpsY, 0.0f, null, false, false)
     }
 
 

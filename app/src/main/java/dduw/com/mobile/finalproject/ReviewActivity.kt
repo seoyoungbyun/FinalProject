@@ -20,6 +20,13 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     var seq: String? = null
 
+    val artViewModel: ArtViewModel by lazy {
+        ViewModelProvider(
+            (application as ArtApplication), // Application 범위를 공유
+            ArtViewModelFactory(application, (application as ArtApplication).artRepository)
+        ).get(ArtViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(reviewBinding.root)
@@ -30,13 +37,6 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")
-
-        val artViewModel: ArtViewModel by lazy {
-            ViewModelProvider(
-                (application as ArtApplication), // Application 범위를 공유
-                ArtViewModelFactory(application, (application as ArtApplication).artRepository)
-            ).get(ArtViewModel::class.java)
-        }
 
         seq = intent.getStringExtra("seq")
 

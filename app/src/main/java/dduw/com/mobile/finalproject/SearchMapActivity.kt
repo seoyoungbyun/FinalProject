@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.data.database.Art
+import dduw.com.mobile.finalproject.data.database.ArtDetail
 import dduw.com.mobile.finalproject.databinding.ActivityMapSearchBinding
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory

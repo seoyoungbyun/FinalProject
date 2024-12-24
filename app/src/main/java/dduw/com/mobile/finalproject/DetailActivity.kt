@@ -44,7 +44,9 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         // 액션 바에 뒤로가기 버튼 표시
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        Log.d("확인", seq.toString())
         seq = intent.getStringExtra("seq")
+        Log.d("확인", seq.toString())
 
         seq?.let {
             artViewModel.getArtBySeq(it).asLiveData().observe(this) { art ->
@@ -57,11 +59,12 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                     }
                 detailBinding.area.text = art.area
                 detailBinding.period.text = "${art.startDate} - ${art.endDate}"
+                detailBinding.price.text = art.price
                 detailBinding.realm.text = art.relamName
                 detailBinding.place.text = art.place
 
                 Glide.with(this)
-                    .load(art.thumbnail)
+                    .load(art.imgUrl)
                     .into(detailBinding.artImage)
 
                 if (art.isLiked == true){

@@ -3,6 +3,9 @@ package dduw.com.mobile.finalproject.data
 import android.graphics.Bitmap
 import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.data.database.ArtDao
+import dduw.com.mobile.finalproject.data.database.ArtDetail
+import dduw.com.mobile.finalproject.data.network.NVService
+import dduw.com.mobile.finalproject.data.network.Poi
 import dduw.com.mobile.finalproject.data.network.util.ArtService
 import kotlinx.coroutines.flow.Flow
 
@@ -12,19 +15,23 @@ class ArtRepository (private val artService: ArtService, private val artDao: Art
         return artService.getArtsByKeyword(relamCode, from, to, sido, keyword, sortStdr)
     }
 
+    suspend fun getArtDetail(seq: String?) : ArtDetail? {
+        return artService.getArtDetailBySeq(seq)
+    }
+
     suspend fun getImage(url: String?) : Bitmap {
         return artService.getImage(url)
     }
 
-    suspend fun insertArt(art: Art){
+    suspend fun insertArt(art: ArtDetail){
         artDao.insertArt(art)
     }
 
-    suspend fun deleteArt(art: Art){
+    suspend fun deleteArt(art: ArtDetail){
         artDao.deleteArt(art)
     }
 
-    suspend fun updateArt(art: Art){
+    suspend fun updateArt(art: ArtDetail){
         artDao.updateArt(art)
     }
 
@@ -44,15 +51,15 @@ class ArtRepository (private val artService: ArtService, private val artDao: Art
         artDao.updateIsReviewed(seq, isReviewed)
     }
 
-    fun getArtBySeq(seq: String): Flow<Art> {
+    fun getArtBySeq(seq: String): Flow<ArtDetail> {
         return artDao.getArtBySeq(seq)
     }
 
-    fun getLikedArts(): Flow<List<Art>> {
+    fun getLikedArts(): Flow<List<ArtDetail>> {
         return artDao.getLikedArts()
     }
 
-    fun getReviewedArts(): Flow<List<Art>> {
+    fun getReviewedArts(): Flow<List<ArtDetail>> {
         return artDao.getReviewedArts()
     }
 }
