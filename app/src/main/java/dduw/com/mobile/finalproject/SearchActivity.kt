@@ -42,9 +42,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         "미술" to "D000",
         "연극" to "A000",
         "음악" to "B000",
-        "영상" to "G000",
         "무용" to "C000",
-        "건축" to "E000",
         "기타" to "L000"
     )
 
@@ -155,7 +153,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@SearchActivity, SearchMapActivity::class.java)
+                val intent = Intent(this@SearchActivity, PlaceMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

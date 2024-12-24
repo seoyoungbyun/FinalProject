@@ -160,7 +160,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@SearchMapActivity, SearchMapActivity::class.java)
+                val intent = Intent(this@SearchMapActivity, PlaceMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

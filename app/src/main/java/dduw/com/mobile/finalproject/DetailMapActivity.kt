@@ -155,7 +155,7 @@ class DetailMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@DetailMapActivity, SearchMapActivity::class.java)
+                val intent = Intent(this@DetailMapActivity, PlaceMapActivity::class.java)
                 startActivity(intent)
                 return true
             }
