@@ -34,6 +34,7 @@ import dduw.com.mobile.finalproject.databinding.ActivityStorageBinding
 import dduw.com.mobile.finalproject.ui.ArtAdapter
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
+import dduw.com.mobile.finalproject.ui.CustomInfoWindowAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -97,8 +98,8 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                                 googleMap.addMarker(
                                     MarkerOptions()
                                         .position(position)
-                                        .title(place.name)
-                                        .snippet(addr + "\n내 위치로부터 ${place.radius}")
+                                        .title("${place.name}")
+                                        .snippet("$addr\n내 위치로부터 ${place.radius}km")
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                                 )
                             } catch (e: Exception) {
@@ -123,6 +124,7 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
         mapFragment.getMapAsync(object : OnMapReadyCallback {
             override fun onMapReady(map: GoogleMap) {
                 googleMap = map
+                googleMap.setInfoWindowAdapter(CustomInfoWindowAdapter(layoutInflater))
             }
         })
 
