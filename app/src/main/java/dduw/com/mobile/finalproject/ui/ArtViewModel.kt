@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.data.ArtRepository
 import dduw.com.mobile.finalproject.data.database.ArtDetail
+import dduw.com.mobile.finalproject.data.network.Poi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

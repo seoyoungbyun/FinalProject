@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -52,6 +53,21 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 artViewModel.updateRating(seq, reviewBinding.reviewRating.rating)
                 artViewModel.addReview(seq, reviewBinding.reviewBox.text.toString())
                 artViewModel.updateIsReviewed(seq, true)
+            }
+        }
+
+        reviewBinding.btnShare.setOnClickListener{
+            seq?.let {
+                artViewModel.getArtBySeq(it).asLiveData().observe(this) { art ->
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        val title = HtmlCompat.fromHtml(art.title ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                        val reviewText = HtmlCompat.fromHtml(art.review ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                        putExtra(Intent.EXTRA_TEXT, "평점: ${art.rating}\n리뷰: $reviewText")
+                        putExtra(Intent.EXTRA_SUBJECT, "$title 리뷰")
+                    }
+                    startActivity(Intent.createChooser(intent, ""))
+                }
             }
         }
 
