@@ -2,11 +2,10 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dduw.com.mobile.finalproject.data.database.Art
-import dduw.com.mobile.finalproject.data.database.ArtDetail
 import dduw.com.mobile.finalproject.databinding.ActivityMapSearchBinding
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
@@ -120,10 +118,12 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
 
             if (lat != null && lng != null) {
                 val location = LatLng(lat, lng)
+                val title = HtmlCompat.fromHtml(art.title ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                val place = HtmlCompat.fromHtml(art.place ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
                 val markerOptions: MarkerOptions = MarkerOptions()
                 markerOptions.position(location)
-                    .title(art.title)
-                    .snippet(art.place)
+                    .title(title)
+                    .snippet(place)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 googleMap.addMarker(markerOptions)
             }
@@ -133,7 +133,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         if (arts.isNotEmpty()) {
             val firstLatLng = arts.firstOrNull()?.let {  LatLng(it.gpsY!!.toDouble(), it.gpsX!!.toDouble()) }
             firstLatLng?.let {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 20f))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 11F))
             }
         }
     }
@@ -160,7 +160,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@SearchMapActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@SearchMapActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

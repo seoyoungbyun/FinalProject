@@ -103,7 +103,7 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@StorageActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@StorageActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

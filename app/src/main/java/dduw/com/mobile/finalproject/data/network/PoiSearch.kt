@@ -4,10 +4,10 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-interface INaverPlaceSearch {
+interface PoiSearch {
 
     @GET("tmap/pois/search/around")
-    suspend fun getPlacesByKeyword(
+    suspend fun getPoisByCategories(
         @Query("version") version: Int = 1,
         @Query("centerLon") centerLon: Float,
         @Query("centerLat") centerLat: Float,

@@ -8,10 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.databinding.ActivitySearchBinding
 import dduw.com.mobile.finalproject.ui.ArtBasicAdapter
 import dduw.com.mobile.finalproject.ui.ArtViewModel
@@ -153,7 +151,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@SearchActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@SearchActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

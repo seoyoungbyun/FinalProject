@@ -1,14 +1,10 @@
 package dduw.com.mobile.finalproject
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,8 +24,6 @@ class DetailMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
     val TAG = "DETAIL_MAP_ACTIVITY"
 
     private lateinit var googleMap: GoogleMap
-    var gpsX = null
-    var gpsY = null
 
     val binding by lazy {
         ActivityDetailMapBinding.inflate(layoutInflater)
@@ -155,7 +149,7 @@ class DetailMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@DetailMapActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@DetailMapActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

@@ -7,7 +7,6 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dduw.com.mobile.finalproject.R
-import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.data.database.ArtDetail
 import dduw.com.mobile.finalproject.databinding.ListItemBinding
 

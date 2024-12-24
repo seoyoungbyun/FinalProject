@@ -13,7 +13,7 @@ import java.io.InputStream
 class ArtService(val context: Context) {
     private val TAG = "ArtService"
 
-    // Naver OpenAPI 를 이용하여 책 검색결과 반환
+    //공연전시 OpenAPI 를 이용하여 공연전시 검색결과 반환
     suspend fun getArtsByKeyword(realmCode: String?, from: String?, to: String?, sido: String?, keyword: String?, sortStdr: String) : List<Art> {
 
         val address : String = context.resources.getString(R.string.url)

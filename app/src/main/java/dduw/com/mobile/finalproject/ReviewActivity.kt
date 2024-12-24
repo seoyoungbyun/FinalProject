@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
@@ -104,7 +103,7 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_map->{
-                val intent = Intent(this@ReviewActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@ReviewActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

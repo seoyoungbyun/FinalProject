@@ -4,14 +4,14 @@ import android.graphics.Bitmap
 import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.data.database.ArtDao
 import dduw.com.mobile.finalproject.data.database.ArtDetail
-import dduw.com.mobile.finalproject.data.network.NVService
+import dduw.com.mobile.finalproject.data.network.POIService
 import dduw.com.mobile.finalproject.data.network.Poi
 import dduw.com.mobile.finalproject.data.network.util.ArtService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class ArtRepository (private val artService: ArtService, private val nvService: NVService, private val artDao: ArtDao){
+class ArtRepository (private val artService: ArtService, private val poiService: POIService, private val artDao: ArtDao){
 
     suspend fun getArtsByKeyword(relamCode: String?, from: String?, to: String?, sido: String?, keyword: String?, sortStdr: String) : List<Art> {
         return artService.getArtsByKeyword(relamCode, from, to, sido, keyword, sortStdr)
@@ -21,9 +21,9 @@ class ArtRepository (private val artService: ArtService, private val nvService: 
         return artService.getArtDetailBySeq(seq)
     }
 
-    suspend fun getPlaces(lon: Float, lat: Float, categories: String): List<Poi>? {
+    suspend fun getPois(lon: Float, lat: Float, categories: String): List<Poi>? {
         return withContext(Dispatchers.IO) {
-            val response = nvService.getPlaces(lon, lat, categories)
+            val response = poiService.getPois(lon, lat, categories)
             response?.searchPoiInfo?.pois?.poi ?: emptyList()
         }
     }

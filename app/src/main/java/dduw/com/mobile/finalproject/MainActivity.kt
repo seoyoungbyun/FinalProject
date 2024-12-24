@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     try {
                         val detailedArt = seq?.let { artViewModel.getArtDetail(it) } // API 호출
                         detailedArt?.let {
-                            Log.d("확인", detailedArt.toString())
                             artViewModel.insertArt(it) // 상세 데이터 저장
                         }
 
@@ -107,7 +106,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
 
             R.id.menu_map->{
-                val intent = Intent(this@MainActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@MainActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

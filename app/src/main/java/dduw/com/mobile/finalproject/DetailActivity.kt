@@ -2,10 +2,8 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
@@ -45,18 +43,13 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         // 액션 바에 뒤로가기 버튼 표시
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        Log.d("확인", seq.toString())
         seq = intent.getStringExtra("seq")
-        Log.d("확인", seq.toString())
 
         seq?.let {
             artViewModel.getArtBySeq(it).asLiveData().observe(this) { art ->
                 detailBinding.title.text =
                     art.title?.let { title ->
-                        HtmlCompat.fromHtml(
-                            title,
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        )
+                        HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
                     }
                 detailBinding.area.text = art.area
                 detailBinding.period.text = "${art.startDate} - ${art.endDate}"
@@ -141,7 +134,7 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
 
             R.id.menu_map -> {
-                val intent = Intent(this@DetailActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@DetailActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }

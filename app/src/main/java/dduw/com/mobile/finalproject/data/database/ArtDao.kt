@@ -41,7 +41,7 @@ interface ArtDao {
     @Query("SELECT * FROM art_table WHERE isLiked = 1")
     fun getLikedArts(): Flow<List<ArtDetail>>
 
-    // 다녀온 전시 목록
+    // 리뷰 남긴 목록
     @Query("SELECT * FROM art_table WHERE isReviewed = 1")
     fun getReviewedArts(): Flow<List<ArtDetail>>
 }

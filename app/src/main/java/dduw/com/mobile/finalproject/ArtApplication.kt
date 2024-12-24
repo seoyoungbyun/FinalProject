@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import dduw.com.mobile.finalproject.data.database.ArtDatabase
 import dduw.com.mobile.finalproject.data.ArtRepository
-import dduw.com.mobile.finalproject.data.network.NVService
+import dduw.com.mobile.finalproject.data.network.POIService
 import dduw.com.mobile.finalproject.data.network.util.ArtService
 
 class ArtApplication : Application(), ViewModelStoreOwner {
@@ -20,8 +20,8 @@ class ArtApplication : Application(), ViewModelStoreOwner {
         ArtService(this)
     }
 
-    val nvService by lazy {
-        NVService(this)
+    val poiService by lazy {
+        POIService(this)
     }
 
     val artDatabase by lazy {
@@ -29,6 +29,6 @@ class ArtApplication : Application(), ViewModelStoreOwner {
     }
 
     val artRepository by lazy {
-        ArtRepository(artService, nvService, artDatabase.artDao())
+        ArtRepository(artService, poiService, artDatabase.artDao())
     }
 }

@@ -49,11 +49,11 @@ class ArtViewModel (application: Application, val artRepo: ArtRepository) : Andr
     }
 
     //주변 장소 표시
-    private val _places = MutableLiveData<List<Poi>>()
-    val places : LiveData<List<Poi>> = _places
+    private val _pois = MutableLiveData<List<Poi>>()
+    val pois : LiveData<List<Poi>> = _pois
 
-    fun getPlaces(lon: Float, lat: Float, categories: String) = viewModelScope.launch {
-        _places.value = artRepo.getPlaces(lon, lat, categories)
+    fun getPois(lon: Float, lat: Float, categories: String) = viewModelScope.launch {
+        _pois.value = artRepo.getPois(lon, lat, categories)
     }
 
     fun insertArt(art: ArtDetail) = viewModelScope.launch {

@@ -2,7 +2,6 @@ package dduw.com.mobile.finalproject.data.network.util
 
 import android.util.Xml
 import dduw.com.mobile.finalproject.data.database.Art
-import dduw.com.mobile.finalproject.data.network.util.ArtDetailParser.Companion
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException

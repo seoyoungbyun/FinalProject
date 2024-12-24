@@ -1,6 +1,5 @@
 package dduw.com.mobile.finalproject.data.database
 
-import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 data class Art(

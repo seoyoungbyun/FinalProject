@@ -10,7 +10,7 @@ import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
 
 class StartActivity : AppCompatActivity() {
-    val TAG = "MAIN_ACTIVITY_TAG"
+    val TAG = "START_ACTIVITY_TAG"
 
     val binding by lazy {
         ActivityStartBinding.inflate(layoutInflater)

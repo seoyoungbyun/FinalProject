@@ -4,7 +4,6 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -14,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -29,21 +27,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dduw.com.mobile.finalproject.databinding.ActivityPlaceBinding
-import dduw.com.mobile.finalproject.databinding.ActivityStorageBinding
+import dduw.com.mobile.finalproject.databinding.ActivityPoiBinding
 import dduw.com.mobile.finalproject.ui.ArtAdapter
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
 import dduw.com.mobile.finalproject.ui.CustomInfoWindowAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.Locale
 
-class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-//보관함
+class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+//주변 공연장
 
-    val TAG = "PLACE_ACTIVITY_TAG"
+    val TAG = "POIMAP_ACTIVITY_TAG"
 
     private lateinit var googleMap: GoogleMap
     lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -51,7 +44,7 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
     lateinit var locationCallback: LocationCallback
 
     val binding by lazy {
-        ActivityPlaceBinding.inflate(layoutInflater)
+        ActivityPoiBinding.inflate(layoutInflater)
     }
 
     val artViewModel: ArtViewModel by lazy {
@@ -70,7 +63,7 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.selectedItemId = R.id.menu_map
-        bottomNavigationView.setOnItemSelectedListener(this@PlaceMapActivity) // 리스너 설정
+        bottomNavigationView.setOnItemSelectedListener(this@PoiMapActivity) // 리스너 설정
 
         //actionBar title 변경
         getSupportActionBar()?.setTitle("아트로그")
@@ -86,20 +79,20 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                 val targetLoc: LatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLoc, 13F))
 
-                artViewModel.getPlaces(targetLoc.longitude.toFloat(), targetLoc.latitude.toFloat(), "공연장")
-                artViewModel.places.observe(this@PlaceMapActivity) { places ->
-                    if (places != null) {
+                artViewModel.getPois(targetLoc.longitude.toFloat(), targetLoc.latitude.toFloat(), "공연장")
+                artViewModel.pois.observe(this@PoiMapActivity) { pois ->
+                    if (pois != null) {
                         googleMap.clear()
-                        places.forEach { place ->
+                        pois.forEach { poi ->
                             try {
-                                val position = LatLng(place.noorLat.toDouble(), place.noorLon.toDouble())
-                                val addr = "${place.lowerAddrName} ${place.firstNo}-${place.secondNo}"
+                                val position = LatLng(poi.noorLat.toDouble(), poi.noorLon.toDouble())
+                                val addr = "${poi.lowerAddrName} ${poi.firstNo}-${poi.secondNo}"
 
                                 googleMap.addMarker(
                                     MarkerOptions()
                                         .position(position)
-                                        .title("${place.name}")
-                                        .snippet("$addr\n내 위치로부터 ${place.radius}km")
+                                        .title("${poi.name}")
+                                        .snippet("$addr\n내 위치로부터 ${poi.radius}km")
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                                 )
                             } catch (e: Exception) {
@@ -108,7 +101,7 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                         }
                     } else {
                         Toast.makeText(
-                            this@PlaceMapActivity,
+                            this@PoiMapActivity,
                             "장소 데이터를 불러오지 못했습니다.",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -165,7 +158,7 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_home -> { // 홈 메뉴
-                val intent = Intent(this@PlaceMapActivity, MainActivity::class.java)
+                val intent = Intent(this@PoiMapActivity, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // 기존 Activity 제거
                 startActivity(intent)
                 finish() // 현재 Activity 종료
@@ -173,19 +166,19 @@ class PlaceMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
             }
 
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this@PlaceMapActivity, SearchActivity::class.java)
+                val intent = Intent(this@PoiMapActivity, SearchActivity::class.java)
                 startActivity(intent)
                 return true
             }
 
             R.id.menu_storage -> { // 검색 메뉴
-                val intent = Intent(this@PlaceMapActivity, StorageActivity::class.java)
+                val intent = Intent(this@PoiMapActivity, StorageActivity::class.java)
                 startActivity(intent)
                 return true
             }
 
             R.id.menu_review -> { // 리뷰 메뉴
-                val intent = Intent(this@PlaceMapActivity, ReviewListActivity::class.java)
+                val intent = Intent(this@PoiMapActivity, ReviewListActivity::class.java)
                 startActivity(intent)
                 return true
             }

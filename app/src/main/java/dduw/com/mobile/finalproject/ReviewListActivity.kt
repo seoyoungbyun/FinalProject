@@ -2,7 +2,6 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,7 @@ import dduw.com.mobile.finalproject.ui.ReviewAdapter
 class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 //리뷰 화면
 
-    val TAG = "REVIEW_ACTIVITY_TAG"
+    val TAG = "REVIEW_LIST_ACTIVITY_TAG"
 
     val binding by lazy {
         ActivityReviewListBinding.inflate(layoutInflater)
@@ -81,25 +80,24 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_home -> { // 홈 메뉴
-                // MainActivity로 이동
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this@ReviewListActivity, MainActivity::class.java)
                 startActivity(intent)
                 return true
             }
             R.id.menu_search -> { // 검색 메뉴
-                val intent = Intent(this, SearchActivity::class.java)
+                val intent = Intent(this@ReviewListActivity, SearchActivity::class.java)
                 startActivity(intent)
                 return true
             }
 
             R.id.menu_storage -> { // 보관함 메뉴
-                val intent = Intent(this, StorageActivity::class.java)
+                val intent = Intent(this@ReviewListActivity, StorageActivity::class.java)
                 startActivity(intent)
                 return true
             }
 
             R.id.menu_map->{
-                val intent = Intent(this@ReviewListActivity, PlaceMapActivity::class.java)
+                val intent = Intent(this@ReviewListActivity, PoiMapActivity::class.java)
                 startActivity(intent)
                 return true
             }
