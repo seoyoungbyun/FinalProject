@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,9 +26,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dduw.com.mobile.finalproject.data.network.Poi
 import dduw.com.mobile.finalproject.databinding.ActivityPoiBinding
 import dduw.com.mobile.finalproject.ui.ArtAdapter
 import dduw.com.mobile.finalproject.ui.ArtViewModel
@@ -69,32 +73,30 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         getSupportActionBar()?.setTitle("아트로그")
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         locationRequest = LocationRequest.Builder(3000)
             .setMinUpdateIntervalMillis(5000)
             .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
             .build()
+
         locationCallback = object : LocationCallback() {
+            //사용자 위치 받아오기
             override fun onLocationResult(locationResult: LocationResult) {
                 val currentLocation: Location = locationResult.lastLocation ?: return
                 val targetLoc: LatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                //사용자 위치로 카메라 이동
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLoc, 13F))
-
+                //사용자 위치 원으로 표시
+                addMyLocationCircle(targetLoc)
+                //주변 공연장 Open API 요청
                 artViewModel.getPois(targetLoc.longitude.toFloat(), targetLoc.latitude.toFloat(), "공연장")
                 artViewModel.pois.observe(this@PoiMapActivity) { pois ->
                     if (pois != null) {
                         googleMap.clear()
+                        addMyLocationCircle(targetLoc)
                         pois.forEach { poi ->
                             try {
-                                val position = LatLng(poi.noorLat.toDouble(), poi.noorLon.toDouble())
-                                val addr = "${poi.lowerAddrName} ${poi.firstNo}-${poi.secondNo}"
-
-                                googleMap.addMarker(
-                                    MarkerOptions()
-                                        .position(position)
-                                        .title("${poi.name}")
-                                        .snippet("$addr\n내 위치로부터 ${poi.radius}km")
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                                )
+                                addPoiLocationMarker(poi)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Marker 추가 실패: ${e.message}")
                             }
@@ -123,9 +125,31 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+    // "주변 공연장 위치" 마커를 추가하는 함수
+    private fun addPoiLocationMarker(poi: Poi) {
+        val position = LatLng(poi.noorLat.toDouble(), poi.noorLon.toDouble())
+        val addr = "${poi.lowerAddrName} ${poi.firstNo}-${poi.secondNo}"
+        // "주변 공연장 위치" 마커 추가
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(position)
+                .title("${poi.name}")
+                .snippet("$addr\n내 위치로부터 ${poi.radius}km")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+        )
+    }
+
+    // "내 위치" 원을 추가하는 함수
+    private fun addMyLocationCircle(targetLoc: LatLng) {
+        // "내 위치"를 원으로 표시
+        googleMap.addCircle(
+            CircleOptions()
+                .center(targetLoc)
+                .radius(50.0)
+                .strokeColor(Color.BLUE)
+                .fillColor(Color.argb(80, 0, 0, 255))
+                .strokeWidth(5f)
+        )
     }
 
     // Permission 확인
@@ -153,6 +177,11 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
             )
         }
+    }
+    //화면 꺼지면 locationUpdate 요청 중지
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
