@@ -13,7 +13,7 @@ class POIService(val context: Context) {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl(context.resources.getString(R.string.url_naver))
+            .baseUrl(context.resources.getString(R.string.url_tmap))
             .addConverterFactory( GsonConverterFactory.create() )
             .build()
 

@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(view.context, "API 호출 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "상세 정보를 불러오지 못했어요\n${e.message}", Toast.LENGTH_SHORT).show()
                         }
                         Log.e("API 오류", "에러 발생: ${e.message}")
                     }

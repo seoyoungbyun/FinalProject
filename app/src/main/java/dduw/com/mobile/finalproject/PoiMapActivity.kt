@@ -73,6 +73,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         supportActionBar?.apply {
             displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
             setCustomView(R.layout.custom_action_bar)
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 

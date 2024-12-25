@@ -1,5 +1,6 @@
 package dduw.com.mobile.finalproject.data.network.util
 
+import android.util.Log
 import android.util.Xml
 import dduw.com.mobile.finalproject.data.database.Art
 import org.xmlpull.v1.XmlPullParser
@@ -8,6 +9,7 @@ import java.io.IOException
 import java.io.InputStream
 
 class ArtParser {
+    private val TAG = "ArtParser"
     private val ns: String? = null
 
     companion object {
@@ -26,7 +28,10 @@ class ArtParser {
 
     @Throws(XmlPullParserException::class, IOException::class)
     fun parse(inputStream: InputStream?) : List<Art> {
-
+        if (inputStream == null) {
+            Log.e(TAG, "InputStream is null")
+            return emptyList()
+        }
         inputStream.use { inputStream ->
             val parser : XmlPullParser = Xml.newPullParser()
 

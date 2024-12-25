@@ -2,6 +2,7 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -34,8 +35,11 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         setContentView(detailBinding.root)
 
+        val selectedId = intent.getIntExtra("selectedId", 0)
+
         // BottomNavigationView 초기화
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = selectedId
         bottomNavigationView.setOnItemSelectedListener(this@DetailActivity) // 리스너 설정
 
         //actionBar 로고 설정
@@ -49,40 +53,45 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
         seq?.let {
             artViewModel.getArtBySeq(it).asLiveData().observe(this) { art ->
-                detailBinding.title.text =
-                    art.title?.let { title ->
-                        HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                if (art == null) {
+                    Toast.makeText(this@DetailActivity, "해당 데이터를 찾을 수 없습니다", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    detailBinding.title.text =
+                        art.title?.let { title ->
+                            HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        }
+                    detailBinding.area.text = art.area
+                    detailBinding.period.text = "${art.startDate} - ${art.endDate}"
+                    detailBinding.price.text = art.price
+                    detailBinding.realm.text = art.relamName
+                    detailBinding.place.text = art.place
+
+                    Glide.with(this)
+                        .load(art.imgUrl)
+                        .into(detailBinding.artImage)
+
+                    if (art.isLiked == true) {
+                        detailBinding.detailBtnLike.setImageResource(R.drawable.ic_liked)
+                    } else {
+                        detailBinding.detailBtnLike.setImageResource(R.drawable.ic_border)
                     }
-                detailBinding.area.text = art.area
-                detailBinding.period.text = "${art.startDate} - ${art.endDate}"
-                detailBinding.price.text = art.price
-                detailBinding.realm.text = art.relamName
-                detailBinding.place.text = art.place
 
-                Glide.with(this)
-                    .load(art.imgUrl)
-                    .into(detailBinding.artImage)
+                    detailBinding.detailBtnLike.setOnClickListener {
+                        art.isLiked = !(art.isLiked ?: false)
 
-                if (art.isLiked == true){
-                    detailBinding.detailBtnLike.setImageResource(R.drawable.ic_liked)
-                }else{
-                    detailBinding.detailBtnLike.setImageResource(R.drawable.ic_border)
-                }
+                        val seq = art.seq
+                        artViewModel.updateIsLiked(seq, art.isLiked!!)
+                    }
 
-                detailBinding.detailBtnLike.setOnClickListener{
-                    art.isLiked = !(art.isLiked ?: false)
-
-                    val seq = art.seq
-                    artViewModel.updateIsLiked(seq, art.isLiked!!)
-                }
-
-                detailBinding.btnMap.setOnClickListener{
-                    val intent = Intent(this@DetailActivity, DetailMapActivity::class.java)
-                    intent.putExtra("gpsX", art.gpsX)
-                    intent.putExtra("gpsY", art.gpsY)
-                    intent.putExtra("place", art.place)
-                    intent.putExtra("title", art.title)
-                    startActivity(intent)
+                    detailBinding.btnMap.setOnClickListener {
+                        val intent = Intent(this@DetailActivity, DetailMapActivity::class.java)
+                        intent.putExtra("gpsX", art.gpsX)
+                        intent.putExtra("gpsY", art.gpsY)
+                        intent.putExtra("place", art.place)
+                        intent.putExtra("title", art.title)
+                        startActivity(intent)
+                    }
                 }
             }
         }

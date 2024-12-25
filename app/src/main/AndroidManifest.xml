@@ -68,7 +68,7 @@
         <activity android:name=".SearchMapActivity"
             android:exported="false"/>
 
-        <activity android:name=".PlaceMapActivity"
+        <activity android:name=".PoiMapActivity"
             android:exported="false"/>
     </application>
 

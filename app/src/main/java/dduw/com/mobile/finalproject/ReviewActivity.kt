@@ -77,7 +77,7 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                         type = "text/plain"
                         val title = HtmlCompat.fromHtml(art.title ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
                         val reviewText = HtmlCompat.fromHtml(art.review ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
-                        putExtra(Intent.EXTRA_TEXT, "평점: ${art.rating}\n리뷰: $reviewText")
+                        putExtra(Intent.EXTRA_TEXT, "$title 리뷰\n평점: ${art.rating}\n리뷰: $reviewText")
                         putExtra(Intent.EXTRA_SUBJECT, "$title 리뷰")
                     }
                     startActivity(Intent.createChooser(intent, ""))

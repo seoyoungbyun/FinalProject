@@ -64,6 +64,7 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
 
                 val intent = Intent(this@StorageActivity, DetailActivity::class.java)
                 intent.putExtra("seq", seq) // seq만 전달
+                intent.putExtra("selectedId", R.id.menu_storage)
                 startActivity(intent)
             }
         })

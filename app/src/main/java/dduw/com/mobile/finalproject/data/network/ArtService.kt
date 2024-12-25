@@ -36,7 +36,8 @@ class ArtService(val context: Context) {
             null
         }
 
-        return ArtParser().parse(result)
+        //네트워크 오류 발생 시 빈 리스트 반환 후 처리
+        return result?.let { ArtParser().parse(it) } ?: emptyList()
     }
 
     suspend fun getArtDetailBySeq(seq: String?) : ArtDetail? {
@@ -55,7 +56,7 @@ class ArtService(val context: Context) {
             null
         }
 
-        return ArtDetailParser().parse(result)
+        return result?.let { ArtDetailParser().parse(it) } ?: null
     }
 
     // Glide 를 사용하여 책 이미지를 가져와 Bitmap 으로 반환

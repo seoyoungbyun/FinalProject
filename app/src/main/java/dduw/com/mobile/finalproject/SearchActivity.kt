@@ -111,6 +111,7 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                         withContext(Dispatchers.Main) {
                             val intent = Intent(this@SearchActivity, DetailActivity::class.java)
                             intent.putExtra("seq", seq) // seq만 전달
+                            intent.putExtra("selectedId", R.id.menu_search)
                             startActivity(intent)
                         }
                     } catch (e: Exception) {
