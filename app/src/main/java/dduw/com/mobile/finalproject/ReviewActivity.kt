@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
@@ -37,8 +38,12 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         bottomNavigationView.selectedItemId = R.id.menu_review
         bottomNavigationView.setOnItemSelectedListener(this@ReviewActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         seq = intent.getStringExtra("seq")
 
@@ -80,6 +85,16 @@ class ReviewActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             }
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> { // 액션 바의 뒤로가기 버튼 클릭
+                onBackPressed() // 기본 뒤로가기 동작
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

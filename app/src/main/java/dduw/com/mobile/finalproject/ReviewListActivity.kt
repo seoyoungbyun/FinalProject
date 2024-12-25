@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -39,8 +40,11 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
         bottomNavigationView.selectedItemId = R.id.menu_review
         bottomNavigationView.setOnItemSelectedListener(this@ReviewListActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+        }
 
         val adapter = ReviewAdapter()
         binding.rvReviews.adapter = adapter

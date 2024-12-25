@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">ArtLog</string>
     <string name="url">http://www.culture.go.kr/openapi/rest/publicperformancedisplays/realm</string>
 </resources>

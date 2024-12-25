@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -41,8 +42,11 @@ class StorageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
         bottomNavigationView.selectedItemId = R.id.menu_storage
         bottomNavigationView.setOnItemSelectedListener(this@StorageActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+        }
 
         adapter = ArtAdapter()
         binding.rvStorages.adapter = adapter

@@ -69,8 +69,10 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         bottomNavigationView.selectedItemId = R.id.menu_map
         bottomNavigationView.setOnItemSelectedListener(this@PoiMapActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 

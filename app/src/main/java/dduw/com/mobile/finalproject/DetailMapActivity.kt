@@ -5,6 +5,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,8 +34,12 @@ class DetailMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         //지도 객체 가져오기
         val mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment

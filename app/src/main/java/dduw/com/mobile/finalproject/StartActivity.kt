@@ -2,6 +2,7 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import dduw.com.mobile.finalproject.databinding.ActivityStartBinding
@@ -29,8 +30,10 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+        }
 
         binding.startBtn.setOnClickListener{
             // ViewModel에 API 요청

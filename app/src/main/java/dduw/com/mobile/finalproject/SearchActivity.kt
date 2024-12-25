@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,8 +57,11 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         bottomNavigationView.selectedItemId = R.id.menu_search
         bottomNavigationView.setOnItemSelectedListener(this@SearchActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+        }
 
         adapter = ArtBasicAdapter()
         binding.rvSearch.adapter = adapter

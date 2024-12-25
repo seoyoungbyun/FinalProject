@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
@@ -37,11 +38,12 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener(this@DetailActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
-
-        // 액션 바에 뒤로가기 버튼 표시
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         seq = intent.getStringExtra("seq")
 

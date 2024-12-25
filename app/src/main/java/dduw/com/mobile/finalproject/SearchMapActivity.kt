@@ -3,6 +3,7 @@ package dduw.com.mobile.finalproject
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
@@ -58,8 +59,11 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         bottomNavigationView.selectedItemId = R.id.menu_search
         bottomNavigationView.setOnItemSelectedListener(this@SearchMapActivity) // 리스너 설정
 
-        //actionBar title 변경
-        getSupportActionBar()?.setTitle("아트로그")
+        //actionBar 로고 설정
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_action_bar)
+        }
 
         binding.btnToRecycler.setOnClickListener{
             val intent = Intent(this@SearchMapActivity, SearchActivity::class.java)
