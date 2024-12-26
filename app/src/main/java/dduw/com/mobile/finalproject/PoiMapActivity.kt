@@ -44,6 +44,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     val TAG = "POIMAP_ACTIVITY_TAG"
 
     private lateinit var googleMap: GoogleMap
+    //지도 초기화 시 사용자 위치로 이동 flag
     private var isCameraAnimated = false
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
@@ -100,7 +101,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
                         if (!isCameraAnimated) {
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLoc, 13F))
-                            isCameraAnimated = true // 플래그 설정
+                            isCameraAnimated = true
                         }
 
                         pois.forEach { poi ->
@@ -136,6 +137,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                     val poi = marker.tag as? Poi
 
                     poi.let {
+                        //공연장 상세정보 표시
                         AlertDialog.Builder(this@PoiMapActivity).apply {
                             if (poi != null) {
                                 val addr1 = "${poi.lowerAddrName} ${poi.firstNo}-${poi.secondNo}"
@@ -173,7 +175,6 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     // "내 위치" 원을 추가하는 함수
     private fun addMyLocationCircle(targetLoc: LatLng) {
-        // "내 위치"를 원으로 표시
         googleMap.addCircle(
             CircleOptions()
                 .center(targetLoc)
@@ -188,12 +189,17 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions() ) { permissions ->
         when {
-            permissions.getOrDefault(ACCESS_FINE_LOCATION, false) ->
+            permissions.getOrDefault(ACCESS_FINE_LOCATION, false) -> {
                 Log.d(TAG, "정확한 위치 사용")
-            permissions.getOrDefault(ACCESS_COARSE_LOCATION, false) ->
+                startLocationUpdates()
+            }
+            permissions.getOrDefault(ACCESS_COARSE_LOCATION, false) -> {
                 Log.d(TAG, "근사 위치 사용")
-            else ->
+                startLocationUpdates()
+            }
+            else -> {
                 Log.d(TAG, "권한 미승인")
+            }
         }
     }
 
@@ -210,7 +216,20 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             )
         }
     }
-    //화면 꺼지면 locationUpdate 요청 중지
+
+    private fun startLocationUpdates() {
+        try {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+            Log.d(TAG, "위치 업데이트 요청 성공")
+        } catch (e: SecurityException) {
+            Log.e(TAG, "위치 업데이트 요청 실패")
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback)
@@ -232,7 +251,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 return true
             }
 
-            R.id.menu_storage -> { // 검색 메뉴
+            R.id.menu_storage -> { // 보관함 메뉴
                 val intent = Intent(this@PoiMapActivity, StorageActivity::class.java)
                 startActivity(intent)
                 return true
