@@ -31,6 +31,10 @@ class ArtViewModel (application: Application, val artRepo: ArtRepository) : Andr
         _arts.value = result
     }
 
+    fun clearArts() {
+        _arts.value = emptyList()
+    }
+
     suspend fun getArtDetail(seq: String?) : ArtDetail? {
         return seq?.let { artRepo.getArtDetail(it) }
     }

@@ -19,6 +19,10 @@ import dduw.com.mobile.finalproject.data.database.Art
 import dduw.com.mobile.finalproject.databinding.ActivityMapSearchBinding
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 //검색 화면
@@ -44,9 +48,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         "미술" to "D000",
         "연극" to "A000",
         "음악" to "B000",
-        "영상" to "G000",
         "무용" to "C000",
-        "건축" to "E000",
         "기타" to "L000"
     )
 
@@ -74,6 +76,8 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         val isChangedInRecycler = intent.getBooleanExtra("isChanged", false)
 
         binding.btnMapSearch.setOnClickListener{
+            googleMap.clear() // 기존 마커 제거
+
             val defaultRealmValue = "분류 전체"
             val defaultAreaValue = "지역 전체"
 
@@ -89,11 +93,16 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             val keyword = binding.editMapSearchTitle.text.toString().takeIf { it.isNotBlank() }
 
             isChangedInMap = !(realm == null && area == null && from == null && to == null && keyword == null)
-            artViewModel.getArts(realmCode, from, to, area, keyword, "1")
+            artViewModel.clearArts()
 
+            // 2. 기존 관찰자 제거
+            artViewModel.arts.removeObservers(this)
+
+            // 3. 새 검색 시작 및 관찰
+            artViewModel.getArts(realmCode, from, to, area, keyword, "1")
             artViewModel.arts.observe(this) { arts ->
                 val validArts = arts.filter { it.gpsY?.toDoubleOrNull() != null && it.gpsX?.toDoubleOrNull() != null }
-                showMarkers(validArts)
+                addMarkers(validArts)
             }
         }
 
@@ -107,7 +116,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
                 if (isChangedInRecycler){
                     artViewModel.arts.observe(this@SearchMapActivity) { arts ->
                         val validArts = arts.filter { it.gpsY?.toDoubleOrNull() != null && it.gpsX?.toDoubleOrNull() != null }
-                        showMarkers(validArts)
+                        addMarkers(validArts)
                     }
                 }
             }
@@ -115,7 +124,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
 
     }
 
-    private fun showMarkers(arts: List<Art>) {
+    private fun addMarkers(arts: List<Art>) {
         arts.forEach { art ->
             val lat = art.gpsY?.toDoubleOrNull()
             val lng = art.gpsX?.toDoubleOrNull()
