@@ -84,6 +84,10 @@ class ArtViewModel (application: Application, val artRepo: ArtRepository) : Andr
         artRepo.updateIsReviewed(seq, isReviewed)
     }
 
+    fun deleteReviewBySeq(seq:String) = viewModelScope.launch {
+        artRepo.deleteReview(seq)
+    }
+
     fun getArtBySeq(seq: String): Flow<ArtDetail> {
         return artRepo.getArtBySeq(seq)
     }

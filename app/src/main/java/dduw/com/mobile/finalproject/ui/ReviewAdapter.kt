@@ -41,6 +41,10 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
             clickListener?.onItemClick(it, position)
         }
 
+        holder.itemBinding.rvItem.setOnLongClickListener{
+            (longClickListener?.onItemLongClick(it, position) ?: false) as Boolean
+        }
+
         holder.itemBinding.btnLikeReview.setOnClickListener{
             likeButtonClickListener?.onLikeButtonClick(it, position)
         }
@@ -52,15 +56,24 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewHolder>() {
         fun onItemClick(view: View, position: Int)
     }
 
+    interface OnItemLongClickListener{
+        fun onItemLongClick(view: View, position: Int) : Boolean
+    }
+
     interface OnLikeButtonClickListener {
         fun onLikeButtonClick(view: View, position: Int)
     }
 
     var clickListener: OnItemClickListener? = null
+    var longClickListener: OnItemLongClickListener? = null
     var likeButtonClickListener: OnLikeButtonClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.clickListener = listener
+    }
+
+    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
+        this.longClickListener = listener
     }
 
     fun setOnLikeButtonClickListener(listener: OnLikeButtonClickListener) {

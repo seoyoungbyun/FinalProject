@@ -60,6 +60,12 @@ class ArtRepository (private val artService: ArtService, private val poiService:
         artDao.updateIsReviewed(seq, isReviewed)
     }
 
+    suspend fun deleteReview(seq: String) {
+        artDao.updateRating(seq, 0.0f)
+        artDao.addReview(seq, null)
+        artDao.updateIsReviewed(seq, false)
+    }
+
     fun getArtBySeq(seq: String): Flow<ArtDetail> {
         return artDao.getArtBySeq(seq)
     }

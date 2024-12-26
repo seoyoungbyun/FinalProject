@@ -30,5 +30,6 @@ data class Poi(
     val firstNo: String,
     val secondNo: String,
     val roadName: String,
+    val buildingNo1: String,
     val radius: String
 )

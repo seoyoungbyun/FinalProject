@@ -65,6 +65,14 @@ class ReviewListActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
             }
         })
 
+        adapter.setOnItemLongClickListener(object : ReviewAdapter.OnItemLongClickListener {
+            override fun onItemLongClick(view: View, position: Int): Boolean {
+                val seq = adapter.arts?.get(position)?.seq
+                seq?.let{ artViewModel.deleteReviewBySeq(seq) }
+                return true
+            }
+        })
+
         adapter.setOnLikeButtonClickListener(object : ReviewAdapter.OnLikeButtonClickListener {
             override fun onLikeButtonClick(view: View, position: Int) {
                 val art = adapter.arts?.get(position)

@@ -92,6 +92,16 @@ class DetailActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                         intent.putExtra("title", art.title)
                         startActivity(intent)
                     }
+
+                    if (art.isReviewed == true) {
+                        detailBinding.btnSave.text = "제출된 리뷰"
+                        detailBinding.rating.rating = art.rating!!
+                        detailBinding.review.setText(art.review)
+                        detailBinding.btnSave.isEnabled = false
+                    } else {
+                        detailBinding.btnSave.text = "리뷰 저장"
+                        detailBinding.btnSave.isEnabled = true
+                    }
                 }
             }
         }
