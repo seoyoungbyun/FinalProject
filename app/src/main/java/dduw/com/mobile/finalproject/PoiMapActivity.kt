@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -99,7 +100,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                         addMyLocationCircle(targetLoc)
                         pois.forEach { poi ->
                             try {
-                                addPoiLocationMarker(poi)
+                                addMarker(poi)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Marker 추가 실패: ${e.message}")
                             }
@@ -122,24 +123,47 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         mapFragment.getMapAsync(object : OnMapReadyCallback {
             override fun onMapReady(map: GoogleMap) {
                 googleMap = map
+                //CustomInfoWindow 설정
                 googleMap.setInfoWindowAdapter(CustomInfoWindowAdapter(layoutInflater))
+
+                // 마커 클릭 리스너 추가
+                googleMap.setOnInfoWindowClickListener { marker ->
+                    val poi = marker.tag as? Poi
+
+                    poi.let {
+                        AlertDialog.Builder(this@PoiMapActivity).apply {
+                            if (poi != null) {
+                                val addr1 = "${poi.lowerAddrName} ${poi.firstNo}-${poi.secondNo}"
+                                val addr2 = "${poi.upperAddrName} ${poi.middleAddrName} ${poi.roadName} ${poi.buildingNo1}"
+
+                                setTitle("${poi.name}")
+                                setMessage("도로명  $addr1\n지번  $addr2\n전화번호  ${poi.telNo}\n\n내 위치로부터 ${poi.radius}km")
+                                setNegativeButton("확인", null)
+                                create()
+                                show()
+                            }
+                        }
+                        false
+                    }
+                }
             }
         })
 
     }
 
     // "주변 공연장 위치" 마커를 추가하는 함수
-    private fun addPoiLocationMarker(poi: Poi) {
+    private fun addMarker(poi: Poi) {
         val position = LatLng(poi.noorLat.toDouble(), poi.noorLon.toDouble())
         val addr = "${poi.lowerAddrName} ${poi.firstNo}-${poi.secondNo}"
         // "주변 공연장 위치" 마커 추가
-        googleMap.addMarker(
+        val marker = googleMap.addMarker(
             MarkerOptions()
                 .position(position)
                 .title("${poi.name}")
                 .snippet("$addr\n내 위치로부터 ${poi.radius}km")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         )
+        marker?.tag = poi
     }
 
     // "내 위치" 원을 추가하는 함수
