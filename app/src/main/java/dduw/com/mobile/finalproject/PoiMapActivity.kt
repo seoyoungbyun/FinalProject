@@ -44,6 +44,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     val TAG = "POIMAP_ACTIVITY_TAG"
 
     private lateinit var googleMap: GoogleMap
+    private var isCameraAnimated = false
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
     lateinit var locationCallback: LocationCallback
@@ -88,8 +89,6 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             override fun onLocationResult(locationResult: LocationResult) {
                 val currentLocation: Location = locationResult.lastLocation ?: return
                 val targetLoc: LatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                //사용자 위치로 카메라 이동
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLoc, 13F))
                 //사용자 위치 원으로 표시
                 addMyLocationCircle(targetLoc)
                 //주변 공연장 Open API 요청
@@ -98,6 +97,12 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                     if (pois != null) {
                         googleMap.clear()
                         addMyLocationCircle(targetLoc)
+
+                        if (!isCameraAnimated) {
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLoc, 13F))
+                            isCameraAnimated = true // 플래그 설정
+                        }
+
                         pois.forEach { poi ->
                             try {
                                 addMarker(poi)
