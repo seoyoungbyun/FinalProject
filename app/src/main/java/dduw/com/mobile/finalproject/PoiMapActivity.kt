@@ -88,7 +88,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         locationCallback = object : LocationCallback() {
             //사용자 위치 받아오기
             override fun onLocationResult(locationResult: LocationResult) {
-                val currentLocation: Location = locationResult.lastLocation ?: return
+                val currentLocation: Location = locationResult.locations[0]
                 val targetLoc: LatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 //사용자 위치 원으로 표시
                 addMyLocationCircle(targetLoc)
@@ -112,11 +112,7 @@ class PoiMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                             }
                         }
                     } else {
-                        Toast.makeText(
-                            this@PoiMapActivity,
-                            "장소 데이터를 불러오지 못했습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@PoiMapActivity, "장소 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

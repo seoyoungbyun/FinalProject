@@ -2,6 +2,8 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +11,10 @@ import dduw.com.mobile.finalproject.databinding.ActivityStartBinding
 import dduw.com.mobile.finalproject.ui.ArtAdapter
 import dduw.com.mobile.finalproject.ui.ArtViewModel
 import dduw.com.mobile.finalproject.ui.ArtViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StartActivity : AppCompatActivity() {
     val TAG = "START_ACTIVITY_TAG"
@@ -37,10 +43,20 @@ class StartActivity : AppCompatActivity() {
 
         binding.startBtn.setOnClickListener{
             // ViewModel에 API 요청
-            artViewModel.getArts(null, null, null, null, null, "1")
-
-            val intent = Intent(this@StartActivity, MainActivity::class.java)
-            startActivity(intent)
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    artViewModel.getArts(null, null, null, null, null, "1") // API 요청
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(this@StartActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@StartActivity, "데이터를 불러오지 못했습니다.\n${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                    Log.e(TAG, "API 호출 오류: ${e.message}")
+                }
+            }
         }
     }
 }

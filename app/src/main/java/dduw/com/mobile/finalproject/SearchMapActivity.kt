@@ -2,6 +2,7 @@ package dduw.com.mobile.finalproject
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -76,7 +77,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         val isChangedInRecycler = intent.getBooleanExtra("isChanged", false)
 
         binding.btnMapSearch.setOnClickListener{
-            googleMap.clear() // 기존 마커 제거
+            googleMap.clear() // 기존 마커 제거(중첩 현상 방지)
 
             val defaultRealmValue = "분류 전체"
             val defaultAreaValue = "지역 전체"
@@ -95,10 +96,8 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             isChangedInMap = !(realm == null && area == null && from == null && to == null && keyword == null)
             artViewModel.clearArts()
 
-            // 2. 기존 관찰자 제거
             artViewModel.arts.removeObservers(this)
 
-            // 3. 새 검색 시작 및 관찰
             artViewModel.getArts(realmCode, from, to, area, keyword, "1")
             artViewModel.arts.observe(this) { arts ->
                 val validArts = arts.filter { it.gpsY?.toDoubleOrNull() != null && it.gpsX?.toDoubleOrNull() != null }
@@ -154,6 +153,7 @@ class SearchMapActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_home -> { // 홈 메뉴
+                //Open API 요청->viewModel arts 원상복귀
                 artViewModel.getArts(null, null, null, null, null, "1")
                 val intent = Intent(this@SearchMapActivity, MainActivity::class.java)
                 startActivity(intent)

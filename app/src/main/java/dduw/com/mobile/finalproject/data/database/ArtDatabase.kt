@@ -18,7 +18,7 @@ abstract class ArtDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ArtDatabase::class.java,
-                    "art_db2"
+                    "art_database"
                 )
                     .fallbackToDestructiveMigration() // 스키마 변경 시 데이터 삭제
                     .build()

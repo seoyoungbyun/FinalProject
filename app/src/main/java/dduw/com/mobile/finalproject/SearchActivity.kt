@@ -102,8 +102,8 @@ class SearchActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 val seq = adapter.arts?.get(position)?.seq
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val detailedArt = seq?.let { artViewModel.getArtDetail(it) } // API 호출
-                        detailedArt?.let {
+                        val artDetail = seq?.let { artViewModel.getArtDetail(it) } // API 호출
+                        artDetail?.let {
                             artViewModel.insertArt(it) // 상세 데이터 저장
                         }
 
